@@ -1,334 +1,133 @@
 <!DOCTYPE html>
-<html class="no-js" lang="en">
-
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>My Portfolio</title>
-	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-	<link rel="icon" href="favicon.ico" type="image/x-icon">
-    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900" rel="stylesheet">
-    <link rel="stylesheet" href="libs/font-awesome/css/font-awesome.min.css">
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/styles.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MT Technologies</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #0d1117;
+      color: #f0f6fc;
+      scroll-behavior: smooth;
+    }
+    header {
+      background-color: #161b22;
+      padding: 2rem;
+      text-align: center;
+      position: relative;
+      animation: fadeInDown 1s ease-out;
+    }
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    header img {
+      width: 80px;
+      position: absolute;
+      top: 20px;
+      left: 20px;
+    }
+    header h1 {
+      font-size: 2.5rem;
+      margin: 0;
+      color: #58a6ff;
+      font-family: 'Orbitron', sans-serif;
+    }
+    header p {
+      font-size: 1.2rem;
+      margin: 0.5rem 0 0;
+      color: #8b949e;
+    }
+    section {
+      padding: 2rem;
+      max-width: 960px;
+      margin: auto;
+      animation: fadeInUp 1s ease-out;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    h2 {
+      color: #58a6ff;
+      margin-bottom: 1rem;
+    }
+    .services {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+    .service {
+      background-color: #21262d;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      flex: 1 1 250px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .service:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 20px rgba(88, 166, 255, 0.3);
+    }
+    .service a {
+      color: #58a6ff;
+      text-decoration: none;
+      display: block;
+    }
+    footer {
+      background-color: #161b22;
+      padding: 1rem;
+      text-align: center;
+      color: #8b949e;
+    }
+    a {
+      color: #58a6ff;
+      text-decoration: none;
+    }
+  </style>
 </head>
-
 <body>
-    <div id="mobile-menu-open" class="shadow-large">
-        <i class="fa fa-bars" aria-hidden="true"></i>
+  <header>
+    <img src="logo.png" alt="MT Technologies Logo" />
+    <h1>MT Technologies</h1>
+    <p>Turning Ideas Into Products, Perfected with Precision</p>
+  </header>
+  <section>
+    <h2>About Us</h2>
+    <p>MT Technologies is a product engineering firm focused on embedded systems, PCB design, and IoT development. From concept to commercialization, we deliver tailored solutions for startups and companies building the next generation of smart hardware.</p>
+  </section>
+  <section>
+    <h2>Our Services</h2>
+    <div class="services">
+      <div class="service">
+        <a href="firmware.html"><h3>Embedded Firmware Development</h3></a>
+        <p>Specialized in STM32, ESP32, and Arduino platforms with real-time control and communication protocols.</p>
+      </div>
+      <div class="service">
+        <a href="pcb.html"><h3>PCB & Hardware Design</h3></a>
+        <p>Custom PCB layouts and hardware schematics optimized for manufacturability and performance.</p>
+      </div>
+      <div class="service">
+        <a href="iot.html"><h3>IoT & Cloud Integration</h3></a>
+        <p>End-to-end solutions connecting sensors, devices, and dashboards via secure and scalable IoT platforms.</p>
+      </div>
+      <div class="service">
+        <a href="gui.html"><h3>GUI & HMI Design</h3></a>
+        <p>Graphical interfaces using LVGL, Qt, and Squareline Studio for user-friendly control systems.</p>
+      </div>
     </div>
-    <!-- End #mobile-menu-toggle -->
-    <header>
-        <div id="mobile-menu-close">
-            <span>Close</span> <i class="fa fa-times" aria-hidden="true"></i>
-        </div>
-        <ul id="menu" class="shadow">
-            <li>
-                <a href="#about">About</a>
-            </li>
-            <li>
-                <a href="#experience">Experience</a>
-            </li>
-            <li>
-                <a href="#education">Education</a>
-            </li>
-            <li>
-                <a href="#projects">Projects</a>
-            </li>
-            <li>
-                <a href="#skills">Skills</a>
-            </li>
-            <li>
-                <a href="#contact">Contact</a>
-            </li>
-        </ul>
-    </header>
-    <!-- End header -->
-
-    <div id="lead">
-        <div id="lead-content">
-            <h1>Muhammad Tayyab</h1>
-            <h2>Embedded Systems Engineer</h2>
-            <a href="https://drive.google.com/file/d/128IEDJdm8_AQg9yXr10B8Hz-lDsNV7V2/view?usp=sharing" class="btn-rounded-white">Download Resume</a>
-        </div>
-        <!-- End #lead-content -->
-
-        <div id="lead-overlay"></div>
-
-        <div id="lead-down">
-            <span>
-                <i class="fa fa-chevron-down" aria-hidden="true"></i>
-            </span>
-        </div>
-        <!-- End #lead-down -->
-    </div>
-    <!-- End #lead -->
-
-    <div id="about">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <h2 class="heading">About Me</h2>
-                </div>
-                <div class="col-md-8">
-                    <p>
-                        With a Bachelor of Science in Electrical Engineering from the National University of Technology, I’ve successfully transitioned into the role of Electrical Engineer at Revive Medical Technologies Inc.. Here, I focus on STM32 programming, hardware integration, and PCB design, and I manage our team while mentoring interns. My role now also includes overseeing the aspects of all projects, ensuring successful execution and alignment with strategic goals as I take on the additional responsibility of Technical Project Manager.
-
-                        Previously, as an intern, I honed my skills in embedded systems, particularly in debugging and troubleshooting, which laid the foundation for my current work. I also leverage Arduino IDE and Generative AI to innovate and advance our medical technology solutions.
-
-                        I’m committed to contributing to sustainable and cutting-edge electrical industry practices, ensuring excellence in every project we undertake.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- End #about -->
-
-    <div id="experience" class="background-alt">
-        <h2 class="heading">Experience</h2>
-        <div id="experience-timeline">
-            <div data-date="December 2024 – February 2025">
-                <h3>Revive Medical Technologies</h3>
-                <h4>Technical Project Manager</h4>
-                <p>
-                    Responsible for overseeing the aspects of all projects, ensuring successful execution and alignment with strategic goals.
-                <!-- <br> ● Firmware Design & Development
-                <br> ● GUI Design & Implementation
-                <br> ● Training & Support -->
-                </p>
-            </div>
-
-            <div data-date="April 2024 – February 2025">
-                <h3>Revive Medical Technologies</h3>
-                <h4>Electrical Engineer</h4>
-                <p>
-                    Team Lead Machines Development in Embedded System Department.
-                <br> ● Firmware Design & Development
-                <br> ● GUI Design & Implementation
-                <br> ● Training & Support
-                </p>
-            </div>
-
-            <div data-date="January 2024 – March 2024">
-                <h3>Revive Medical Technologies</h3>
-                <h4>Trainee Engineer</h4>
-                <p>
-                     ● Firmware Development
-                    <br> ● PCB Designing
-                    <br>● Circuit Design
-                </p>
-            </div>
-
-            <div data-date="November 2023 – December 2023">
-                <h3>Revive Medical Technologies</h3>
-                <h4>Embedded Systems Engineer Intern</h4>
-                <p>
-                    ● Training: Gained hands-on experience with STM32 MCUs and Keil IDE; developed foundational
-                    skills in firmware development.
-                    <br>● Display Work: Worked with Nextion displays to develop and implement user interfaces, integrating
-                    with firmware for effective operation.
-                </p>
-            </div>
-
-            <div data-date="August 2023 – October 2023">
-                <h3>Netkom Technologies</h3>
-                <h4>MBB Intern</h4>
-                <p>
-                    CAD Designing of Telecom sites for Huawei.
-                    <br> ○ RAIN Project
-                    <br> ■ Designed Telecom sites of South Africa Telecom Company RAIN.
-                    <br>■ Proposed new Antennas.
-                    <br>○ Kazakhstan Project
-                    <br> ■ Designed Telecom sites of Kazakhstan Telecom Company.
-                    <br>■ Proposed new Antennas.
-                </p>
-            </div>
-        </div>
-    </div>
-    <!-- End #experience -->
-
-    <div id="education">
-        <h2 class="heading">Education</h2>
-        <div class="education-block">
-            <h3>National University of Technology</h3>
-            <span class="education-date">Sept 2019 - Aug 2023</span>
-            <h4>Bachelor of Science in Electrical Engineering <br>(Washington Accord - International Alliance)</h4>
-            <p>
-                Elective Courses
-                <br>1. Machine Learning
-                <br>2. Data Communication And Networks
-                <br>3. Wireless Sensor Networks
-                <br>4. Power Electronics
-                <br>5. Power Generation, Transmission, Distribution
-            </p>
-        </div>
-        <!-- End .education-block -->
-    </div>
-    <!-- End #education -->
-
-    <div id="projects" class="background-alt">
-        <h2 class="heading">Projects</h2>
-        <div class="container">
-            <div class="row">
-                <div class="project shadow-large">
-                    <div class="project-image">
-                        <img src="images/project.jpg" />
-                    </div>
-                    <!-- End .project-image -->
-                    <div class="project-info">
-                        <h3>STM-StepControl</h3>
-                        <p>
-                            This library provides an easy-to-use interface for controlling stepper motors using STM microcontrollers and driver modules. 
-                            <br>It supports two pulse generation methods: 
-                            <br>- **Delay-based control** for precise step timing. 
-                            <br>- **PWM-based control** for efficient and scalable pulse output.
-                        </p>
-                        <a href="https://github.com/MuhammadTayyab1002/STM-StepControl">View Project</a>
-                    </div>
-                    <!-- End .project-info -->
-                </div>
-                <!-- End .project -->
-
-                <div class="project shadow-large">
-                    <div class="project-image">
-                        <img src="images/Thermo.png"  class="responsive-image" />
-                    </div>
-                    <!-- End .project-image -->
-                    <div class="project-info">
-                        <h3>Thermoforming Machine</h3>
-                        <p>
-                            A thermoforming machine for catheter shaping is a specialized piece of equipment used in the medical device manufacturing process. It utilizes heat and pressure to mold thermoplastic materials into specific shapes and designs needed for catheters.
-                        </p>
-                        <a href="#">View Project</a>
-                    </div>
-                    <!-- End .project-info -->
-                </div>
-                <!-- End .project -->
-
-                <div class="project shadow-large">
-                    <div class="project-image">
-                        <img src="images/GCR.jpg" class="responsive-image" />
-                    </div>
-                    <!-- End .project-image -->
-                    <div class="project-info">
-                        <h3>Gesture Control Robot</h3>
-                        <p>
-                            The Replicating Gesture Robotic arm is a servo-controlled robotic arm that imitates
-                            human arm motions in three dimensions. This design's primary goal is to manage the
-                            robotic arm.
-                            <br>Using mortal gestures. The robotic arm moves and completes the task while the system
-                            mimics the actions of human hands. It is coded so that the expected behavior for the fatal
-                            gesture is carried out. Consequently, the model we suggested will be quite useful.
-                            Keywords: Servo motor, Arduino Mega, and robotic arm
-                        </p>
-                        <a href="https://github.com/MuhammadTayyab1002/Gesture_Controlled_Robot">View Project</a>
-                    </div>
-                    <!-- End .project-info -->
-                </div>
-                <!-- End .project -->
-
-                <div class="project shadow-large">
-                    <div class="project-image">
-                        <img src="images/project.jpg" /> 
-                    </div>
-                    <!-- End .project-image -->
-                    <div class="project-info">
-                        <h3>Electric Bike</h3>
-                        <p>
-                            We use a 1kW brushless DC motor combined with a PWM motor Controller that drives the motor. And a 48V 20Ah Lead Acid dry cell battery pack for the power.
-                        </p>
-                        <a href="#">View Project</a>
-                    </div>
-                    <!-- End .project-info -->
-                </div>
-                <!-- End .project -->
-
-                <div class="project shadow-large">
-                    <div class="project-image">
-                        <img src="images/project1.jpg" /> 
-                    </div>
-                    <!-- End .project-image -->
-                    <div class="project-info">
-                        <h3>Wireless Control of Home Appliances</h3>
-                        <p>
-                            We use Atmel microcontroller AT89C61 and a ULN 2003 driver. And done programming on MiKro C IDE. Use a transmitter receiver to control the relays.
-                        </p>
-                        <a href="#">View Project</a>
-                    </div>
-                    <!-- End .project-info -->
-                </div>
-                <!-- End .project -->
-
-            </div>
-        </div>
-    </div>
-    <!-- End #projects -->
-
-    <div id="skills">
-        <h2 class="heading">Skills</h2>
-        <ul>
-            <li>Python</li>
-            <li>C</li>
-            <li>C++</li>
-            <li>Circuit Designing</li>
-            <li>Altium</li>
-            <li>Generative AI</li>
-            <li>Machine Learning</li>
-            <li>Fusion 360</li>
-        </ul>
-    </div>
-    <!-- End #skills -->
-
-    <div id="contact">
-        <h2>Get in Touch</h2>
-        <div id="contact-form">
-            <form method="POST" action="https://formspree.io/f/xjkvbarv">
-                <input type="hidden" name="_subject" value="Contact request from personal website" />
-                <input type="email" name="_replyto" placeholder="Your email" required>
-                <textarea name="message" placeholder="Your message" required></textarea>
-                <button type="submit">Send</button>
-            </form>
-        </div>
-        <!-- End #contact-form -->
-    </div>
-    <!-- End #contact -->
-
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-5 copyright">
-                    <p>
-                        Copyright &copy; <span id="current-year">2025</span> Muhammad Tayyab
-                    </p>
-                </div>
-                <div class="col-sm-2 top">
-                    <span id="to-top">
-                        <i class="fa fa-chevron-up" aria-hidden="true"></i>
-                    </span>
-                </div>
-                <div class="col-sm-5 social">
-                    <ul>
-                        <li>
-                            <a href="mailto:m.tayyabtahir1002@gmail.com" target="_blank"><i class="fa fa-envelope" aria-hidden="true"></i></a>
-                        </li>
-                        <li>
-                            <a href="https://github.com/MuhammadTayyab1002" target="_blank"><i class="fa fa-github" aria-hidden="true"></i></a>
-                        </li>
-                        <li>
-                            <a href="www.linkedin.com/in/muhammadtayyab1002" target="_blank"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-                        </li>
-                        <li>
-                            <a href="tel:+92-317-5478-535" target="_blank"><i class="fa fa-phone" aria-hidden="true"></i></a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </footer>
-    <!-- End footer -->
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="js/scripts.min.js"></script>
+  </section>
+  <section>
+    <h2>Get in Touch</h2>
+    <p>Email us at: <a href="mailto:contact.mttech@gmail.com">contact.mttech@gmail.com</a></p>
+    <p>Follow us on <a href="https://www.linkedin.com/company/mt-technologies">LinkedIn</a></p>
+  </section>
+  <footer>
+    &copy; 2025 MT Technologies. All rights reserved.
+  </footer>
 </body>
-
 </html>
