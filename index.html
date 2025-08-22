@@ -6,126 +6,130 @@
   <title>MT Tech</title>
   <link rel="stylesheet" href="css/styles.css" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Add these before your closing </head> tag -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 </head>
 
-<body class="bg-blue-300 rounded-3xl dark:">
-    <div class="flex items-center justify-between gap-6 p-7 md:flex-row md:gap-8 rounded-2xl max-h-24" >
+<body class="bg-blue-400 rounded-3xl">
+  <!-- Responsive Header -->
+  <div class="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-8 p-4 md:p-7 rounded-2xl max-h-32 bg-blue-300">
     <div>
-      <img src="images/logo.png" class="h-20 w-20 rounded-2xl" alt="MT Tech Logo" />
+      <img src="images/logo.png" class="h-16 w-16 md:h-20 md:w-20 rounded-2xl" alt="MT Tech Logo" />
     </div>
-      <nav class="flex items-center md:items-start"> 
-        <ul class="flex flex-row gap-x-6">
-         <li><a href="#Home" class="no-underline text-black hover:shadow-2xl hover:bg-blue-500 hover:text-white hover:scale-105 transition-all duration-300 rounded-2xl px-2">Home</a></li>
-         <li><a href="#Services" class="no-underline text-black hover:shadow-2xl hover:bg-blue-500 hover:text-white hover:scale-105 transition-all duration-300 rounded-2xl px-2">Services</a></li>
-         <li><a href="#About" class="no-underline text-black hover:shadow-2xl hover:bg-blue-500 hover:text-white hover:scale-105 transition-all duration-300 rounded-2xl px-2">About</a></li>
-         <li><a href="#Contact" class="no-underline text-black hover:shadow-2xl hover:bg-blue-500 hover:text-white hover:scale-105 transition-all duration-300 rounded-2xl px-2">Contact</a></li>
-        </ul></nav>
-      </div>
+    <nav class="w-full md:w-auto">
+      <ul class="flex flex-col md:flex-row gap-2 md:gap-x-6 items-center">
+        <li><a href="#Home" class="no-underline text-black hover:shadow-2xl hover:bg-blue-500 hover:text-white hover:scale-105 transition-all duration-300 rounded-2xl px-2 py-1">Home</a></li>
+        <li><a href="#Services" class="no-underline text-black hover:shadow-2xl hover:bg-blue-500 hover:text-white hover:scale-105 transition-all duration-300 rounded-2xl px-2 py-1">Services</a></li>
+        <li><a href="#About" class="no-underline text-black hover:shadow-2xl hover:bg-blue-500 hover:text-white hover:scale-105 transition-all duration-300 rounded-2xl px-2 py-1">About</a></li>
+        <li><a href="#Contact" class="no-underline text-black hover:shadow-2xl hover:bg-blue-500 hover:text-white hover:scale-105 transition-all duration-300 rounded-2xl px-2 py-1">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
 
-<!---bg-[url(images/1_bg.jpg)] bg-contain --->
-  <div id="Home" class="flex items-center bg-blue-400 justify-between flex-row gap-10 px-10 py-24 min-h-48">
-    <div>
-        <p class=" object-top-right text-white text-8xl" style="font-family: 'Orbitron';">MT Tech</p>
-        <p class="italic text-3xl bottom-3" style="font-family: 'Roboto';">Turning Ideas Into Products,<br> Perfected with Precision</p>
+  <!-- Hero Section -->
+  <div id="Home" class="flex flex-col lg:flex-row items-center bg-blue-400 justify-between gap-8 md:gap-10 px-4 md:px-10 py-12 md:py-24 min-h-48 rounded-2xl my-6">
+    <div class="flex-1 flex flex-col items-center lg:items-start">
+      <p class="text-blue-950 text-4xl md:text-6xl lg:text-8xl font-orbitron text-center lg:text-left">MT Tech</p>
+      <p class="italic text-2xl md:text-2xl lg:text-3xl font-roboto text-center lg:text-left mt-4">Turning Ideas Into Products,<br> Perfected with Precision</p>
     </div>
-    <div>
-      <img src="images/2_bg.jpg" class=" rounded-2xl" alt="">
+    <div class="flex-1 flex justify-center">
+      <img src="images/2_bg.jpg" class="rounded-2xl min-w-full min-h-full md:max-w-md lg:max-w-lg object-cover" alt="">
     </div>
   </div>
 
-  <section class="py-52" id="About">
-    <h2 class="text-center text-6xl" style="font-family: 'Orbitron';">About Us</h2>
-    <p class="italic px-52 py-10 text-3xl text-justify " style="font-family: 'Roboto';">MT Tech is a product engineering firm focused on embedded systems, PCB design, and IoT development. From concept to commercialization, we deliver tailored solutions for startups and companies building the next generation of smart hardware.</p>
+  <!-- About Section -->
+  <section class="py-16 md:py-32 px-4" id="About">
+    <h2 class="text-center text-3xl md:text-5xl lg:text-6xl font-orbitron">About Us</h2>
+    <p class="italic mx-auto mt-8 text-lg md:text-2xl lg:text-3xl font-roboto text-justify max-w-3xl">MT Tech is a product engineering firm focused on embedded systems, PCB design, and IoT development. From concept to commercialization, we deliver tailored solutions for startups and companies building the next generation of smart hardware.</p>
   </section>
 
-  <div>
-    <img src="images/4_bg.png" class="w-full h-full object-cover rounded-2xl" alt="MT Tech Team">
+  <!-- Team Image -->
+  <div class="flex items-center justify-center py-12 md:py-24">
+    <img src="images/4_bg.png" class="w-full max-w-4xl h-auto object-cover rounded-2xl" alt="MT Tech Team">
   </div>
 
-  <section id="Services">
-    <h2 class="text-center  text-6xl p-10" style="font-family: 'Orbitron';">Our Services</h2>
-    <div class="services flex justify-center items-center text-center  flex-wrap">
-      <div class="Firmware border-amber-200 border-2 rounded-2xl p-6 m-4 w-80 h-64 hover:shadow-2xl hover:bg-amber-200 hover:scale-105 transition-all duration-300">
-        <a href="firmware.html"><h3 class="text-3xl text-justify-center">Embedded Firmware Development</h3></a>
-        <p class="text-justify-center">Specialized in STM32, ESP32, and Arduino platforms with real-time control and communication protocols.</p>
+  <!-- Services Section -->
+  <section id="Services" class="py-16 md:py-24 px-4">
+    <h2 class="text-center text-3xl md:text-5xl lg:text-6xl font-orbitron py-20">Our Services</h2>
+    <div class="services flex flex-wrap justify-center items-stretch gap-6">
+      <div class="service border-amber-200 border-2 rounded-2xl p-6 w-full sm:w-72 md:w-80 h-64 bg-blue-300 hover:shadow-2xl hover:bg-amber-200 hover:scale-105 transition-all duration-300 flex flex-col justify-between">
+        <a href="firmware.html"><h3 class="text-2xl md:text-3xl font-orbitron text-center">Embedded Firmware Development</h3></a>
+        <p class="font-roboto text-center mt-4">Specialized in STM32, ESP32, and Arduino platforms with real-time control and communication protocols.</p>
       </div>
-      <div class="service border-amber-200 border-2 rounded-2xl p-6 m-4 w-80 h-64 hover:shadow-2xl hover:bg-amber-200 hover:scale-105 transition-all duration-300">
-        <a href="pcb.html"><h3 class="text-3xl text-justify-center">PCB & Hardware Design</h3></a>
-        <p class="text-justify-center">Custom PCB layouts and hardware schematics optimized for manufacturability and performance.</p>
+      <div class="service border-amber-200 border-2 rounded-2xl p-6 w-full sm:w-72 md:w-80 h-64 bg-blue-300 hover:shadow-2xl hover:bg-amber-200 hover:scale-105 transition-all duration-300 flex flex-col justify-between">
+        <a href="pcb.html"><h3 class="text-2xl md:text-3xl font-orbitron text-center">PCB & Hardware Design</h3></a>
+        <p class="font-roboto text-center mt-4">Custom PCB layouts and hardware schematics optimized for manufacturability and performance.</p>
       </div>
-      <div class="service  border-amber-200 border-2 rounded-2xl p-6 m-4 w-80 h-64 hover:shadow-2xl hover:bg-amber-200 hover:scale-105 transition-all duration-300">
-        <a href="iot.html"><h3 class="text-3xl text-justify-center">IoT & Cloud Integration</h3></a>
-        <p class="text-justify-center">End-to-end solutions connecting sensors, devices, and dashboards via secure and scalable IoT platforms.</p>
+      <div class="service border-amber-200 border-2 rounded-2xl p-6 w-full sm:w-72 md:w-80 h-64 bg-blue-300 hover:shadow-2xl hover:bg-amber-200 hover:scale-105 transition-all duration-300 flex flex-col justify-between">
+        <a href="iot.html"><h3 class="text-2xl md:text-3xl font-orbitron text-center">IoT & Cloud Integration</h3></a>
+        <p class="font-roboto text-center mt-4">End-to-end solutions connecting sensors, devices, and dashboards via secure and scalable IoT platforms.</p>
       </div>
     </div>
   </section>
 
-  <div class="flex items-center justify-center py-24">
-    <img src="images/5_bg.png" class="w-full h-full object-cover rounded-2xl" alt="MT Tech Team">
+  <!-- Team Image 2 -->
+  <div class="flex items-center justify-center py-12 md:py-24">
+    <img src="images/5_bg.png" class="w-full max-w-4xl h-auto object-cover rounded-2xl" alt="MT Tech Team">
   </div>
 
-<!-- Technology Slideshow Section -->
-<section id="Technologies" class="py-20">
-  <h2 class="text-center text-5xl mb-10" style="font-family: 'Orbitron';">Technologies We Use</h2>
-  <div class="swiper mySwiper w-full max-w-4xl mx-auto">
-    <div class="swiper-wrapper">
-      <div class="swiper-slide flex flex-col items-center">
-        <img src="images/STMicroelectronics_logo.svg" alt="STM32" class="h-24 mb-4">
+  <!-- Technology Slideshow Section -->
+  <section id="Technologies" class="py-16 md:py-20 px-4">
+    <h2 class="text-center text-3xl md:text-5xl mb-10 font-orbitron">Technologies We Use</h2>
+    <div class="swiper mySwiper w-full max-w-4xl mx-auto">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide flex flex-col items-center">
+          <img src="images/STMicroelectronics_logo.svg" alt="STM32" class="h-20 md:h-24 mb-4">
+        </div>
+        <div class="swiper-slide flex flex-col items-center">
+          <img src="images/ESP_logo-black.svg" alt="ESP32" class="h-20 md:h-24 mb-4">
+        </div>
+        <div class="swiper-slide flex flex-col items-center">
+          <img src="images/Altium-Designer.webp" alt="altium" class="h-20 md:h-24 mb-4">
+        </div>
+        <div class="swiper-slide flex flex-col items-center">
+          <img src="images/aws-iot-seeklogo.svg" alt="AWS IoT" class="h-20 md:h-24 mb-4">
+        </div>
+        <div class="swiper-slide flex flex-col items-center">
+          <img src="images/Arduino_Logo.png" alt="arduino" class="h-20 md:h-24 mb-4">
+        </div>
+        <!-- Add more slides as needed -->
       </div>
-      <div class="swiper-slide flex flex-col items-center">
-        <img src="images/ESP_logo-black.svg" alt="ESP32" class="h-24 mb-4">
-      </div>
-      <div class="swiper-slide flex flex-col items-center">
-        <img src="images/Altium-Designer.webp" alt="altium" class="h-24 mb-4">
-      </div>
-      <div class="swiper-slide flex flex-col items-center">
-        <img src="images/aws-iot-seeklogo.svg" alt="AWS IoT" class="h-24 mb-4">
-      </div>
-      <div class="swiper-slide flex flex-col items-center">
-        <img src="images/Arduino_Logo.png" alt="arduino" class="h-24 mb-4">
-      </div>      
-      <!-- Add more slides as needed -->
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-pagination"></div>
     </div>
-    <!-- Swiper navigation buttons -->
-    <div class="swiper-button-next"></div>
-    <div class="swiper-button-prev"></div>
-    <!-- Swiper pagination -->
-    <div class="swiper-pagination"></div>
-  </div>
-</section>
+  </section>
 
-  <section id="Contact" class=" py-36 rounded-2xl" >
-    <h2 class="text-center text-6xl" style="font-family: 'Orbitron';">Get in Touch</h2>
-    <p class="text-center text-3xl">Email us at: <a href="mailto:official.mttech@gmail.com">official.mttech@gmail.com</a></p>
-    <p class="text-center text-3xl">Follow us on <a href="https://www.linkedin.com/company/mt-tech-official/" class="text-blue-800">LinkedIn</a></p>
+  <!-- Contact Section -->
+  <section id="Contact" class="py-24 md:py-36 rounded-2xl px-4">
+    <h2 class="text-center text-3xl md:text-6xl font-orbitron">Get in Touch</h2>
+    <p class="text-center text-xl md:text-3xl font-roboto mt-6">Email us at: <a href="mailto:official.mttech@gmail.com" class="text-blue-700 underline">official.mttech@gmail.com</a></p>
+    <p class="text-center text-xl md:text-3xl font-roboto mt-2">Follow us on <a href="https://www.linkedin.com/company/mt-tech-official/" class="text-blue-800 underline">LinkedIn</a></p>
   </section>
   
-  <footer>
+  <footer class="text-center py-6 text-gray-950 text-sm">
     &copy; 2025 MT Tech. All rights reserved.
   </footer>
 
   <script>
-  var swiper = new Swiper(".mySwiper", {
-    slidesPerView: 3,
-    spaceBetween: 30,
-    loop: true,
-    pagination: {
-      el: ".swiper-pagination",
-      clickable: true,
-    },
-    navigation: {
-      nextEl: ".swiper-button-next",
-      prevEl: ".swiper-button-prev",
-    },
-    breakpoints: {
-      0: { slidesPerView: 1 },
-      640: { slidesPerView: 2 },
-      1024: { slidesPerView: 3 }
-    }
-  });
-</script>
+    var swiper = new Swiper(".mySwiper", {
+      slidesPerView: 3,
+      spaceBetween: 30,
+      loop: true,
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+      },
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+      breakpoints: {
+        0: { slidesPerView: 1 },
+        640: { slidesPerView: 2 },
+        1024: { slidesPerView: 3 }
+      }
+    });
+  </script>
 </body>
 </html>
