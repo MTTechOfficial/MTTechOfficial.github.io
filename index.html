@@ -12,16 +12,32 @@
 
 <body class="bg-blue-400 rounded-3xl">
   <!-- Responsive Header -->
-  <div class="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-8 p-4 md:p-7 rounded-2xl max-h-32 bg-blue-300">
+  <div class="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-8 p-4 md:p-7 md:justify-between rounded-2xl max-h-32 bg-blue-300">
     <div>
       <img src="images/logo.png" class="h-16 w-16 md:h-20 md:w-20 rounded-2xl" alt="MT Tech Logo" />
     </div>
-    <nav class="w-full md:w-25%">
+    <nav class="w-full md:w-auto">
       <ul class="flex flex-col md:flex-row gap-2 md:gap-x-6 items-center">
-        <li><a href="#Home" class="no-underline text-black hover:shadow-2xl hover:bg-blue-500 hover:text-white hover:scale-105 transition-all duration-300 rounded-2xl px-2 py-1">Home</a></li>
-        <li><a href="#Services" class="no-underline text-black hover:shadow-2xl hover:bg-blue-500 hover:text-white hover:scale-105 transition-all duration-300 rounded-2xl px-2 py-1">Services</a></li>
-        <li><a href="#About" class="no-underline text-black hover:shadow-2xl hover:bg-blue-500 hover:text-white hover:scale-105 transition-all duration-300 rounded-2xl px-2 py-1">About</a></li>
-        <li><a href="#Contact" class="no-underline text-black hover:shadow-2xl hover:bg-blue-500 hover:text-white hover:scale-105 transition-all duration-300 rounded-2xl px-2 py-1">Contact</a></li>
+        <li>
+          <a href="#Home" class="no-underline text-black hover:shadow-2xl hover:bg-blue-500 hover:text-white hover:scale-105 transition-all duration-300 rounded-2xl px-2 py-1 w-full text-center md:w-auto">
+            Home
+          </a>
+        </li>
+        <li>
+          <a href="#Services" class="no-underline text-black hover:shadow-2xl hover:bg-blue-500 hover:text-white hover:scale-105 transition-all duration-300 rounded-2xl px-2 py-1 w-full text-center md:w-auto">
+            Services
+          </a>
+        </li>
+        <li>
+          <a href="#About" class="no-underline text-black hover:shadow-2xl hover:bg-blue-500 hover:text-white hover:scale-105 transition-all duration-300 rounded-2xl px-2 py-1 w-full text-center md:w-auto">
+            About
+          </a>
+        </li>
+        <li>
+          <a href="#Contact" class="no-underline text-black hover:shadow-2xl hover:bg-blue-500 hover:text-white hover:scale-105 transition-all duration-300 rounded-2xl px-2 py-1 w-full text-center md:w-auto">
+            Contact
+          </a>
+        </li>
       </ul>
     </nav>
   </div>
@@ -52,17 +68,17 @@
   <section id="Services" class="py-16 md:py-24 px-4">
     <h2 class="text-center text-3xl md:text-5xl lg:text-6xl font-orbitron py-20">Our Services</h2>
     <div class="services flex flex-wrap justify-center items-stretch gap-6">
-      <div class="service border-amber-200 border-2 rounded-2xl p-6 w-full sm:w-72 md:w-80 h-64 bg-blue-300 hover:shadow-2xl hover:bg-amber-200 hover:scale-105 transition-all duration-300 flex flex-col justify-between">
+      <div class="service border-amber-200 border-2 rounded-2xl p-6 w-full sm:w-64 md:w-72 h-64 bg-blue-300 hover:shadow-2xl hover:bg-amber-200 hover:scale-105 transition-all duration-300 flex flex-col justify-between">
         <a href="firmware.html"><h3 class="text-2xl md:text-3xl font-orbitron text-center">Embedded Firmware Development</h3></a>
-        <p class="font-roboto text-center mt-4">Specialized in STM32, ESP32, and Arduino platforms with real-time control and communication protocols.</p>
+        <p class="font-roboto text-center mt-1">Specialized in STM32, ESP32, and Arduino platforms with real-time control and communication protocols.</p>
       </div>
-      <div class="service border-amber-200 border-2 rounded-2xl p-6 w-full sm:w-72 md:w-80 h-64 bg-blue-300 hover:shadow-2xl hover:bg-amber-200 hover:scale-105 transition-all duration-300 flex flex-col justify-between">
+      <div class="service border-amber-200 border-2 rounded-2xl p-6 w-full sm:w-64 md:w-72 h-64 bg-blue-300 hover:shadow-2xl hover:bg-amber-200 hover:scale-105 transition-all duration-300 flex flex-col justify-between">
         <a href="pcb.html"><h3 class="text-2xl md:text-3xl font-orbitron text-center">PCB & Hardware Design</h3></a>
-        <p class="font-roboto text-center mt-4">Custom PCB layouts and hardware schematics optimized for manufacturability and performance.</p>
+        <p class="font-roboto text-center mt-1">Custom PCB layouts and hardware schematics optimized for manufacturability and performance.</p>
       </div>
-      <div class="service border-amber-200 border-2 rounded-2xl p-6 w-full sm:w-72 md:w-80 h-64 bg-blue-300 hover:shadow-2xl hover:bg-amber-200 hover:scale-105 transition-all duration-300 flex flex-col justify-between">
+      <div class="service border-amber-200 border-2 rounded-2xl p-6 w-full sm:w-64 md:w-72 h-64 bg-blue-300 hover:shadow-2xl hover:bg-amber-200 hover:scale-105 transition-all duration-300 flex flex-col justify-between">
         <a href="iot.html"><h3 class="text-2xl md:text-3xl font-orbitron text-center">IoT & Cloud Integration</h3></a>
-        <p class="font-roboto text-center mt-4">End-to-end solutions connecting sensors, devices, and dashboards via secure and scalable IoT platforms.</p>
+        <p class="font-roboto text-center mt-1">End-to-end solutions connecting sensors, devices, and dashboards via secure and scalable IoT platforms.</p>
       </div>
     </div>
   </section>
