@@ -1,151 +1,509 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MT Tech</title>
-  <link rel="stylesheet" href="css/styles.css" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
-  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimalist Technologies</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="icon" href="./images/image.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="lib/ionicons/css/ionicons.min.css" rel="stylesheet">
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+    <script src="./js/main.js"></script>
 </head>
+<body>
+    <header class="header">
+        <a href="#" class="logo"><img src="./images/image.png" alt=""></a>
+        <div class="fas fa-bars"></div>
+        <nav class="navbar">
+            <ul>
+                <li><a href="#home">home</a></li>
+                <li><a href="#about">about</a></li>
+                <li><a href="#service">services</a></li>
+                <li><a href="#portfolio">portfolio</a></li>
+                <!-- <li><a href="#team">team</a></li> -->
+                <!-- <li><a href="careers.html">career</a></li> -->
+                <li><a href="#contact">contact</a></li>
+                <!-- <li><a href="#faq">FAQ</a></li> -->
+            </ul>
+        </nav>
+    </header>
 
-<body class="bg-blue-400 rounded-3xl">
-  <!-- Responsive Header -->
-  <div class="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-8 p-4 md:p-7 md:justify-between rounded-2xl max-h-32 bg-blue-300">
-    <div>
-      <img src="images/logo.png" class="h-16 w-16 md:h-20 md:w-20 rounded-2xl" alt="MT Tech Logo" />
-    </div>
-    <nav class="w-full md:w-auto">
-      <ul class="flex flex-col md:flex-row gap-2 md:gap-x-6 items-center">
-        <li>
-          <a href="#Home" class="no-underline text-black hover:shadow-2xl hover:bg-blue-500 hover:text-white hover:scale-105 transition-all duration-300 rounded-2xl px-2 py-1 w-full text-center md:w-auto">
-            Home
-          </a>
-        </li>
-        <li>
-          <a href="#Services" class="no-underline text-black hover:shadow-2xl hover:bg-blue-500 hover:text-white hover:scale-105 transition-all duration-300 rounded-2xl px-2 py-1 w-full text-center md:w-auto">
-            Services
-          </a>
-        </li>
-        <li>
-          <a href="#About" class="no-underline text-black hover:shadow-2xl hover:bg-blue-500 hover:text-white hover:scale-105 transition-all duration-300 rounded-2xl px-2 py-1 w-full text-center md:w-auto">
-            About
-          </a>
-        </li>
-        <li>
-          <a href="#Contact" class="no-underline text-black hover:shadow-2xl hover:bg-blue-500 hover:text-white hover:scale-105 transition-all duration-300 rounded-2xl px-2 py-1 w-full text-center md:w-auto">
-            Contact
-          </a>
-        </li>
-      </ul>
-    </nav>
-  </div>
-
-  <!-- Hero Section -->
-  <div id="Home" class="flex flex-col lg:flex-row items-center bg-blue-400 justify-between gap-8 md:gap-10 px-4 md:px-10 py-12 md:py-24 min-h-48 rounded-2xl my-6">
-    <div class="flex-1 flex flex-col items-center lg:items-start">
-      <p class="text-blue-950 text-4xl md:text-6xl lg:text-8xl font-orbitron text-center lg:text-left">MT Tech</p>
-      <p class="italic text-2xl md:text-2xl lg:text-3xl font-roboto text-center lg:text-left mt-4">Turning Ideas Into Products,<br> Perfected with Precision</p>
-    </div>
-    <div class="flex-1 flex justify-center">
-      <img src="images/2_bg.jpg" class="rounded-2xl min-w-full min-h-full md:max-w-md lg:max-w-lg object-cover" alt="">
-    </div>
-  </div>
-
-  <!-- About Section -->
-  <section class="py-16 md:py-32 px-4" id="About">
-    <h2 class="text-center text-3xl md:text-5xl lg:text-6xl font-orbitron">About Us</h2>
-    <p class="italic mx-auto mt-8 text-lg md:text-2xl lg:text-3xl font-roboto text-justify max-w-3xl">MT Tech is a product engineering firm focused on embedded systems, PCB design, and IoT development. From concept to commercialization, we deliver tailored solutions for startups and companies building the next generation of smart hardware.</p>
+  <section id="home" class="home">
+      <h1>Minimalist Technologies</h1>
+      <h2>Turning Ideas Into Products, Perfected with Precision.</h2>
+    <div class="wave wave1"></div>
+    <div class="wave wave2"></div>
+    <div class="wave wave3"></div>
   </section>
 
-  <!-- Team Image -->
-  <div class="flex items-center justify-center py-12 md:py-24">
-    <img src="images/4_bg.png" class="w-full max-w-4xl h-auto object-cover rounded-2xl" alt="MT Tech Team">
-  </div>
-
-  <!-- Services Section -->
-  <section id="Services" class="py-16 md:py-24 px-4">
-    <h2 class="text-center text-3xl md:text-5xl lg:text-6xl font-orbitron py-20">Our Services</h2>
-    <div class="services flex flex-wrap justify-center items-stretch gap-6">
-      <div class="service border-amber-200 border-2 rounded-2xl p-6 w-full sm:w-64 md:w-72 h-64 bg-blue-300 hover:shadow-2xl hover:bg-amber-200 hover:scale-105 transition-all duration-300 flex flex-col justify-between">
-        <a href="#"><h3 class="text-2xl md:text-3xl font-orbitron text-center">Embedded Firmware Development</h3></a>
-        <p class="font-roboto text-center mt-1">Specialized in STM32, ESP32, and Arduino platforms with real-time control and communication protocols.</p>
-      </div>
-      <div class="service border-amber-200 border-2 rounded-2xl p-6 w-full sm:w-64 md:w-72 h-64 bg-blue-300 hover:shadow-2xl hover:bg-amber-200 hover:scale-105 transition-all duration-300 flex flex-col justify-between">
-        <a href="#"><h3 class="text-2xl md:text-3xl font-orbitron text-center">PCB & Hardware Design</h3></a>
-        <p class="font-roboto text-center mt-1">Custom PCB layouts and hardware schematics optimized for manufacturability and performance.</p>
-      </div>
-      <div class="service border-amber-200 border-2 rounded-2xl p-6 w-full sm:w-64 md:w-72 h-64 bg-blue-300 hover:shadow-2xl hover:bg-amber-200 hover:scale-105 transition-all duration-300 flex flex-col justify-between">
-        <a href="#"><h3 class="text-2xl md:text-3xl font-orbitron text-center">IoT & Cloud Integration</h3></a>
-        <p class="font-roboto text-center mt-1">End-to-end solutions connecting sensors, devices, and dashboards via secure and scalable IoT platforms.</p>
-      </div>
+  <section id="about" class="about">
+    <h1 class="heading">about us</h1>
+    <div class="row">
+        <div class="content">
+            <h3>tailored Embedded Solutions</h3>
+            <p>Our team delivers high-quality, scalable technologies to empower startups and established industries alike.<b> all. the. time.</b><br>
+                With our skills put together, you get an ensemble capable of doing anything and everything you needs.</p>
+            <a href="#"><button class="btn">Read More</button></a>
+        </div>
     </div>
   </section>
 
-  <!-- Team Image 2 -->
-  <div class="flex items-center justify-center py-12 md:py-24">
-    <img src="images/5_bg.png" class="w-full max-w-4xl h-auto object-cover rounded-2xl" alt="MT Tech Team">
+  <div class="pt-5 pb-5" style="background-color: #f2f2f2;">
+    <div class="container">
+      <div class="row">
+        <div class="section-head col-sm-12" id="service">
+          <h1>Our Services</h1>
+          <p>We help you to build high-quality  products as well as deliver a wide range of related professional services.<br> We are providing world-class service to our clients.
+            </p>
+        </div>
+        <div class="col-lg-4 col-sm-6">
+          <div class="item"> <span class="icon feature_box_col_one"><i class="fa fa-microchip"></i></span>
+            <h6>Embedded Product Development</h6>
+            <p>Design and development of reliable, high-performance embedded systems. <br>from concept to production.</p>
+          </div>
+        </div>
+        <div class="col-lg-4 col-sm-6">
+          <div class="item"> <span class="icon feature_box_col_two"><i class="fas fa-cube"></i></span>
+            <h6>Printed Circuit Board Design</h6>
+            <p>Design and development of printed circuit boards for various electronic applications. <br>from concept to manufacturing.</p>
+          </div>
+        </div>
+        <div class="col-lg-4 col-sm-6">
+          <div class="item"> <span class="icon feature_box_col_three"><i class="fas fa-code"></i></span>
+            <h6>Firmware Development</h6>
+            <p>Design and development of firmware for embedded systems. <br>from concept to deployment.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+
+  <section class="counters">
+    <div class="container">
+        <div>
+            <i class="far fa-clock fa-4x"></i>
+            <div class="counter" data-target="10000">0</div>
+            <h3>Working Hours</h3>
+        </div>
+        <div>
+            <i class="fas fa-gift fa-4x"></i>
+            <div class="counter" data-target="50">0</div>
+            <h3>Completed Projects</h3>
+        </div>
+        <div>
+            <i class="fas fa-users fa-4x"></i>
+            <div class="counter" data-target="20">0</div>
+            <h3>Happy Clients</h3>
+        </div>
+        <!-- <div>
+            <i class="fas fa-award fa-4x"></i>
+            <div class="counter" data-target="10">0</div>
+            <h3>Awards Received</h3>
+        </div> -->
+    </div>
+</section>
+
+<div class="pt-5 pb-5">
+    <div class="container">
+      <div class="row">
+        <div class="section-head-1 col-sm-12" style="text-align: center;">
+          <h4 style="margin-top: -5rem;" id="portfolio"><span>Our</span> Projects</h4>
+          
+          <p>Minimalist Technologies is focused on providing specialized embedded systems and IoT product development services, 
+                enabling companies to build cutting-edge, reliable, and scalable products with speed and excellence.
+            </p>
+        </div>
+        
+        <div class="col-lg-4 col-sm-6">
+          
+          <div class="item" > <img src="./images/ULCAS.png" alt="" style="max-width: 100%; height: 100%; border-radius: 10px;">
+            <h6><br>ULCAS</h6>
+            <p>A simple, ultra-low-cost attendance system designed for classrooms.</p>
+
+            <div class="details">
+                <h6><br>ULCAS</h6>
+                <p>It combines RFID for fast & reliable card/tag scanning with ESP32-CAM for instant photo capture and visual verification. 
+                    Users just tap their RFID card and the system automatically logs the time + takes a photo — reducing buddy punching and providing 
+                    clear proof of attendance.</p>
+                
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-lg-4 col-sm-6">
+          <div class="item"> <img src="./images/AA_BP.png" alt="" style="max-width: 75%; height: 50%;">
+            <h6><br>AA_BP_PCB</h6>
+            <p>A clean 100x100mm single-layer PCB designed for a client’s Proof of Concept device.</p>
+            <div class="details">
+                <h6>AA_BP_PCB</h6>
+                <p>The complete design was done in Altium®, while strictly maintaining the client’s requirement for a single-layer board so 
+                    they can fabricate it in-house using the etching process. Even at the POC stage, we made sure to maintain proper circuit integrity, 
+                    clean routing, and solid design practices.</p>
+                
+            </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-sm-6">
+          <div class="item"> <img src="./images/WCHA_V2_v1.png" alt="" style="max-width: 75%; height: 50%;">
+            <h6><br>WCHA</h6>
+            <p>Wireless Control Of Home Appliances. The system is designed to be user-friendly and easy to integrate with existing home appliances.</p>
+
+            <div class="details">
+                <h6>WCHA</h6>
+                <p>The core uses Atmel AVR microcontrollers combined with the ULN2003 Darlington transistor array for reliable switching of AC loads via relays. 
+                    The system emphasizes low power consumption, making it suitable for battery-backed or solar-powered installations.</p>
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="communicate">
+    <h3>Ready to turn your idea into reality?</h3>
+    <p>Minimalist Technologies specializes in end-to-end embedded systems and IoT product development.</p>
+    <a href="#contact"><button class="btn">Contact Now</button></a>
+</div>
+
+<!-- <div class="testimonials mt-100">
+    <div class="container">
+        <div class="section-header" style="text-align: center;">
+            <h2 style="margin-top: -15rem;">Testimonials</h2>
+            <p style="font-size: 2rem;">
+                See what people have to say about us
+            </p>
+        </div>
+
+        <div class="owl-carousel testimonials-carousel">
+            <div class="testimonial-item row align-items-center">
+                <div class="testimonial-img">
+                    <img src="./images/testimonial-1.jpg" alt="Testimonial image">
+                </div>
+                <div class="testimonial-text">
+                    <h3>Person-1</h3>
+                    <h4>Designation</h4>
+                    <p>
+                        Testimonial
+
+                    </p>
+                </div>
+            </div>
+            <div class="testimonial-item row align-items-center">
+                <div class="testimonial-img">
+                    <img src="./images/testimonial-2.jpg" alt="Testimonial image">
+                </div>
+                <div class="testimonial-text">
+                    <h3>Person-2</h3>
+                    <h4>Designation</h4>
+                    <p>
+                        Testimonial
+
+                    </p>
+                </div>
+            </div>
+            <div class="testimonial-item row align-items-center">
+                <div class="testimonial-img">
+                    <img src="./images/testimonial-3.jpg" alt="Testimonial image">
+                </div>
+                <div class="testimonial-text">
+                    <h3>Person-3</h3>
+                    <h4>Designation</h4>
+                    <p>
+                        Testimonial
+
+                    </p>
+                </div>
+            </div>
+            <div class="testimonial-item row align-items-center">
+                <div class="testimonial-img">
+                    <img src="./images/testimonial-4.jpg" alt="Testimonial image">
+                </div>
+                <div class="testimonial-text">
+                    <h3>Person-4</h3>
+                    <h4>Designation</h4>
+                    <p>
+                        Testimonial
+
+                    </p>
+                </div>
+            </div>
+            <div class="testimonial-item row align-items-center">
+                <div class="testimonial-img">
+                    <img src="./images/testimonial-5.jpg" alt="Testimonial image">
+                </div>
+                <div class="testimonial-text">
+                    <h3>Person-5</h3>
+                    <h4>Designation</h4>
+                    <p>
+                        Testimonial
+
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<!-- <div class="clients mt-100">
+    <div class="container">
+        <div class="section-header">
+            <h2>Our Clients</h2>
+            <p>
+                We don't just build softwares, we build your business.
+            </p>
+        </div>
+        <div class="owl-carousel clients-carousel">
+            <img src="./images/image.png" alt="Client Logo">
+            <img src="./images/image.png" alt="Client Logo">
+            <img src="./images/image.png" alt="Client Logo">
+            <img src="./images/image.png" alt="Client Logo">
+            <img src="./images/image.png" alt="Client Logo">
+            <img src="./images/image.png" alt="Client Logo">
+            <img src="./images/image.png" alt="Client Logo">
+            <img src="./images/image.png" alt="Client Logo">
+        </div>
+    </div>
+</div> -->
+<a href="#" class="back-to-top"><i class="ion-ios-arrow-up"></i></a>
+<script src="lib/jquery/jquery.min.js"></script>
+<script src="lib/jquery/jquery-migrate.min.js"></script>
+<script src="lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="lib/easing/easing.min.js"></script>
+<script src="lib/waypoints/waypoints.min.js"></script>
+<script src="lib/counterup/counterup.min.js"></script>
+<script src="lib/owlcarousel/owl.carousel.min.js"></script>
+<script src="lib/lightbox/js/lightbox.min.js"></script>
+
+<!-- <section class="team" style="margin-top: 7rem;">
+  <h1 class="heading" style="margin-top: -1.5rem;" id="team">our team</h1>
+  <p></p>
+  <div class="row">
+      <div class="card">
+          <div class="image">
+              <img src="./images/pexels-andrea-piacquadio-845434.jpg" alt="Team member 1">
+          </div>
+          <div class="info">
+              <h3>Schott Watkins</h3>
+              <span>Web Developer</span>
+              <div class="icons">
+                  <a href="https://www.facebook.com/" class="fab fa-facebook-f"></a>
+                  <a href="https://twitter.com/login" class="fab fa-twitter"></a>
+                  <a href="https://www.instagram.com/" class="fab fa-instagram"></a>
+                  <a href="https://www.linkedin.com/" class="fab fa-linkedin"></a>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="card">
+          <div class="image">
+              <img src="./images/pexels-vinicius-wiesehofer-1130624.jpg" alt="Team member 1">
+          </div>
+          <div class="info">
+              <h3>Nicole Bell</h3>
+              <span>Mobile Developer</span>
+              <div class="icons">
+                  <a href="https://www.facebook.com/" class="fab fa-facebook-f"></a>
+                  <a href="https://twitter.com/login" class="fab fa-twitter"></a>
+                  <a href="https://www.instagram.com/" class="fab fa-instagram"></a>
+                  <a href="https://www.linkedin.com/" class="fab fa-linkedin"></a>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="card">
+          <div class="image">
+              <img src="./images/pexels-hussein-altameemi-2776353.jpg" alt="Team member 1">
+          </div>
+          <div class="info">
+              <h3>John Doe</h3>
+              <span>Graphic Designer</span>
+              <div class="icons">
+                  <a href="https://www.facebook.com/" class="fab fa-facebook-f"></a>
+                  <a href="https://twitter.com/login" class="fab fa-twitter"></a>
+                  <a href="https://www.instagram.com/" class="fab fa-instagram"></a>
+                  <a href="https://www.linkedin.com/" class="fab fa-linkedin"></a>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="card">
+          <div class="image">
+              <img src="./images/pexels-andrea-piacquadio-745136.jpg" alt="Team member 1">
+          </div>
+          <div class="info">
+              <h3>Rose Matthews</h3>
+              <span>Web Designer</span>
+              <div class="icons">
+                  <a href="https://www.facebook.com/" class="fab fa-facebook-f"></a>
+                  <a href="https://twitter.com/login" class="fab fa-twitter"></a>
+                  <a href="https://www.instagram.com/" class="fab fa-instagram"></a>
+                  <a href="https://www.linkedin.com/" class="fab fa-linkedin"></a>
+              </div>
+          </div>
+      </div>
+  </div>
+</section> -->
+
+<section id="contact" class="contact">
+    <h1 class="heading">get in touch</h1>
+</section>
+<div class="contact-in">
+    <div class="contact-map">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d212645.32758412763!2d73.08610799999998!3d33.61611625!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38dfbfd07891722f%3A0x6059515c3bdb02b6!2sIslamabad%2C%20Pakistan!5e0!3m2!1sen!2s!4v1778326428156!5m2!1sen!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+    <div class="contact-form">
+        <form action="./contactme.php" method="POST">
+            <input type="text" name="name" placeholder="Name" class="contact-form-txt" required>
+            <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" required placeholder="Contact number" maxlength="10" class="contact-form-phone">
+            <input type="email" name="email" placeholder="Email" class="contact-form-email" required>
+            <textarea placeholder="Your Message" name="message" class="contact-form-txtarea" required></textarea>
+            <input type="submit" value="Submit" name="submit" class="contact-form-btn">
+        </form>
+    </div>
+    </div>
+
+    <!-- <section class="faq">
+      <h1 class="heading" style="margin-top: -2rem; color: #00bfff;" id="faq">FAQ</h1>
+      <div class="row">
+          <div class="accordion-container">
+              <div class="accordion">
+                  <div class="accordion-header">
+                      <span>+</span>
+                      <h3>How much will it cost?</h3>
+                  </div>
+                  <div class="accordion-body">
+                      <p>To get a better idea of the cost of what you want to build, give us a quick phone call. We’ll ask you a few questions about the nature of the site, what sort of interactivity the site will have, your graphic design needs, etc. 
+                          Then we’ll be able to give you a ballpark figure. 
+                          If you’re still interested, we’ll come to your place of business and come up with a firm quote.</p>
+                  </div>
+              </div>
+              <div class="accordion">
+                  <div class="accordion-header">
+                      <span>+</span>
+                      <h3>How long it takes to design?</h3>
+                  </div>
+                  <div class="accordion-body">
+                      <p>The time limit of any assignment is normally dictated by the client. If you have any time limit in mind we will attempt to assemble it for you. 
+                          The main general delay in the making of a website is waiting for the content of the pages to be sent to us by the client.</p>
+                  </div>
+              </div>
+              <div class="accordion">
+                  <div class="accordion-header">
+                      <span>+</span>
+                      <h3>How do I associate with IT Company?</h3>
+                  </div>
+                  <div class="accordion-body">
+                      <p>The process begins when you contact us with your requirements. We analyze your requirements and respond to you. 
+                          On the basis of the further discussion, you can choose an engagement model that suits you the best. 
+                          After that, we begin the process of development.</p>
+                  </div>
+              </div>
+              <div class="accordion">
+                  <div class="accordion-header">
+                      <span>+</span>
+                      <h3>Can you help my current site look more professional?</h3>
+                  </div>
+                  <div class="accordion-body">
+                      <p>Yes. Give us your requirements and we have experienced expertise to help you give a 
+                          new professional look that really wonders!</p>
+                  </div>
+              </div>
+              <div class="accordion">
+                  <div class="accordion-header">
+                      <span>+</span>
+                      <h3>When do I pay?</h3>
+                  </div>
+                  <div class="accordion-body">
+                      <p>For most projects, equal payments are made at the start, midway, and the end of the project, but we can work with you to set up a schedule that meets your needs. 
+                          We understand that this is a big investment and want to help you budget for the expense in whatever way possible.
+                          We accept checks, PayPal, and all major credit cards.</p>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section> -->
+
+    <div class="footer">
+      <div class="footer-top">
+          <div class="container">
+              <div class="row">
+                  <div class="col-lg-3 col-md-6 footer-links">
+                      <h4>About Us</h4>
+                      <ul>
+                          <li><i class="ion-ios-arrow-forward"></i> <a href="#">Home</a></li>
+                          <li><i class="ion-ios-arrow-forward"></i> <a href="#about">About us</a></li>
+                          <li><i class="ion-ios-arrow-forward"></i> <a href="#service">Our services</a></li>
+                          <!-- <li><i class="ion-ios-arrow-forward"></i> <a href="#">Terms & condition</a></li>
+                          <li><i class="ion-ios-arrow-forward"></i> <a href="#">Privacy policy</a></li> -->
+                      </ul>
+                  </div>
+
+                  <div class="col-lg-3 col-md-6 footer-links">
+                      <h4>Useful Links</h4>
+                      <ul>
+                          <li><i class="ion-ios-arrow-forward"></i> <a href="#portfolio">Portfolio</a></li>
+                          <!-- <li><i class="ion-ios-arrow-forward"></i> <a href="#team">Team</a></li> -->
+                          <!-- <li><i class="ion-ios-arrow-forward"></i> <a href="careers.html">Career</a></li> -->
+                          <li><i class="ion-ios-arrow-forward"></i> <a href="#contact">Contact</a></li>
+                          <!-- <li><i class="ion-ios-arrow-forward"></i> <a href="#faq">FAQ</a></li> -->
+                      </ul>
+                  </div>
+
+                  <div class="col-lg-3 col-md-6 footer-contact" style="font-size: 1.5rem;">
+                      <h4>Contact Us</h4>
+                      <p>
+                          Islamabad, Pakistan <br>
+                          <!-- <strong>Phone:</strong> +123-456-7890<br> -->
+                          <strong>Email:</strong> official.mttech@gmail.com<br>
+                      </p>
+
+                      <div class="social-links">
+                          <!-- <a href="https://www.facebook.com/"><i class="ion-logo-facebook"></i></a>
+                          <a href="https://twitter.com/login?lang=en"><i class="ion-logo-twitter"></i></a> -->
+                          <a href="https://www.linkedin.com/company/mt-official/"><i class="ion-logo-linkedin"></i></a>
+                          <!-- <a href="https://www.instagram.com/"><i class="ion-logo-instagram"></i></a>
+                          <a href="https://accounts.google.com/servicelogin/signinchooser?flowName=GlifWebSignIn&flowEntry=ServiceLogin"><i class="ion-logo-googleplus"></i></a> -->
+                      </div>
+
+                  </div>
+
+                  <!-- <div class="col-lg-3 col-md-6 footer-newsletter">
+                      <h4>Subscription</h4>
+                      <p>With Our Skills Put Together, You Get An Ensemble Capable Of Doing Anything And Everything Your Brand Needs. Subscribe Here To Get Our Latest Updates.</p>
+                      <form action="" method="post">
+                          <input type="email" name="email"><input type="submit"  value="Subscribe">
+                      </form>
+                  </div> -->
+
+              </div>
+          </div>
+      </div>
+
+      <div class="container">
+          <div class="row align-items-center">
+              <div class="col-md-6 copyright" style="color: #fff; font-size: 1.3rem;">
+                  Copyright &copy; 2026 Minimalist Technologies. All Rights Reserved.
+              </div>
+          </div>
+      </div>
   </div>
 
-  <!-- Technology Slideshow Section -->
-  <section id="Technologies" class="py-16 md:py-20 px-4">
-    <h2 class="text-center text-3xl md:text-5xl mb-10 font-orbitron">Technologies We Use</h2>
-    <div class="swiper mySwiper w-full max-w-4xl mx-auto">
-      <div class="swiper-wrapper">
-        <div class="swiper-slide flex flex-col items-center">
-          <img src="images/STMicroelectronics_logo.svg" alt="STM32" class="h-20 md:h-24 mb-4">
-        </div>
-        <div class="swiper-slide flex flex-col items-center">
-          <img src="images/ESP_logo-black.svg" alt="ESP32" class="h-20 md:h-24 mb-4">
-        </div>
-        <div class="swiper-slide flex flex-col items-center">
-          <img src="images/Altium-Designer.webp" alt="altium" class="h-20 md:h-24 mb-4">
-        </div>
-        <div class="swiper-slide flex flex-col items-center">
-          <img src="images/aws-iot-seeklogo.svg" alt="AWS IoT" class="h-20 md:h-24 mb-4">
-        </div>
-        <div class="swiper-slide flex flex-col items-center">
-          <img src="images/Arduino_Logo.png" alt="arduino" class="h-20 md:h-24 mb-4">
-        </div>
-        <!-- Add more slides as needed -->
-      </div>
-      <div class="swiper-button-next"></div>
-      <div class="swiper-button-prev"></div>
-      <div class="swiper-pagination"></div>
-    </div>
-  </section>
-
-  <!-- Contact Section -->
-  <section id="Contact" class="py-24 md:py-36 rounded-2xl px-4">
-    <h2 class="text-center text-3xl md:text-6xl font-orbitron">Get in Touch</h2>
-    <p class="text-center text-xl md:text-3xl font-roboto mt-6">Email us at: <a href="mailto:official.mttech@gmail.com" class="text-blue-700 underline">official.mttech@gmail.com</a></p>
-    <p class="text-center text-xl md:text-3xl font-roboto mt-2">Follow us on <a href="https://www.linkedin.com/company/mt-tech-official/" class="text-blue-800 underline">LinkedIn</a></p>
-  </section>
-  
-  <footer class="text-center py-6 text-gray-950 text-sm">
-    &copy; 2025 MT Tech. All rights reserved.
-  </footer>
-
-  <script>
-    var swiper = new Swiper(".mySwiper", {
-      slidesPerView: 3,
-      spaceBetween: 30,
-      loop: true,
-      pagination: {
-        el: ".swiper-pagination",
-        clickable: true,
-      },
-      navigation: {
-        nextEl: ".swiper-button-next",
-        prevEl: ".swiper-button-prev",
-      },
-      breakpoints: {
-        0: { slidesPerView: 1 },
-        640: { slidesPerView: 2 },
-        1024: { slidesPerView: 3 }
-      }
-    });
-  </script>
+  <a href="#" class="back-to-top"><i class="ion-ios-arrow-up"></i></a>
 </body>
 </html>
