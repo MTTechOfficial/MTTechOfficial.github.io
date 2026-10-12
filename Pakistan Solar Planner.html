@@ -1,0 +1,1281 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Pakistan Solar Planner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout: sticky mode bar; inputs in a left rail beside a results column. Results are open sections split by hairlines, with one dark "spec plate" (inverter-display look) carrying the headline system size. */
+:root{
+  --bg:#F1F4F7; --surface:#FFFFFF; --surface2:#E7EDF3; --line:#CFD9E3;
+  --ink:#0F1E2B; --muted:#52667A;
+  --accent:#1B5FAA; --accent-ink:#FFFFFF; --accent-soft:#DCE9F7;
+  --sun:#C77D00; --sun-soft:#FBEBCB;
+  --plate:#0C2036; --plate-ink:#F6C453; --plate-muted:#93AAC4; --plate-line:#25415E;
+  --good:#1E7F4F; --warn:#A8620A; --bad:#B3382C;
+  --font-display:'Archivo','Arial Narrow',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --font-body:'Archivo',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+  --font-data:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0A121A; --surface:#111C27; --surface2:#1A2837; --line:#26394B;
+    --ink:#E7EEF5; --muted:#92A5B8;
+    --accent:#63A6F2; --accent-ink:#06121F; --accent-soft:#16304D;
+    --sun:#F2B33D; --sun-soft:#3A2B0C;
+    --plate:#0C2036; --plate-ink:#F6C453; --plate-muted:#93AAC4; --plate-line:#25415E;
+    --good:#4CC38A; --warn:#E8A33A; --bad:#F07A6C;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0A121A; --surface:#111C27; --surface2:#1A2837; --line:#26394B;
+  --ink:#E7EEF5; --muted:#92A5B8;
+  --accent:#63A6F2; --accent-ink:#06121F; --accent-soft:#16304D;
+  --sun:#F2B33D; --sun-soft:#3A2B0C;
+  --plate:#0C2036; --plate-ink:#F6C453; --plate-muted:#93AAC4; --plate-line:#25415E;
+  --good:#4CC38A; --warn:#E8A33A; --bad:#F07A6C;
+  color-scheme:dark;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.5;-webkit-text-size-adjust:100%}
+h1,h2,h3{font-family:var(--font-display);font-stretch:82%;font-weight:700;line-height:1.12;margin:0;text-wrap:balance;letter-spacing:-.005em}
+h1{font-size:clamp(28px,5vw,44px);font-weight:800}
+h2{font-size:clamp(21px,3vw,27px)}
+h3{font-size:17px}
+p{margin:0}
+a{color:var(--accent)}
+.wrap{max-width:1280px;margin:0 auto;padding-inline:16px}
+.num{font-variant-numeric:tabular-nums}
+.mono{font-family:var(--font-data)}
+
+/* top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 20px;padding-block:10px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-stretch:80%;font-weight:800;font-size:20px;letter-spacing:.01em}
+.brand svg{width:26px;height:26px;flex:none}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:7px;overflow:hidden;background:var(--surface2)}
+.seg button{appearance:none;border:0;background:transparent;color:var(--muted);font:600 13.5px var(--font-body);padding:8px 14px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.seg button+button{border-left:1px solid var(--line)}
+
+/* intro */
+.intro{display:grid;gap:8px;padding-block:26px 6px;max-width:760px}
+.lede{color:var(--muted);font-size:16px;max-width:62ch}
+.stamp{font:500 12px var(--font-data);color:var(--muted);letter-spacing:.02em}
+
+/* layout */
+.layout{display:grid;gap:26px;padding-block:18px 60px;grid-template-columns:minmax(0,1fr)}
+@media(min-width:1040px){.layout{grid-template-columns:minmax(340px,410px) minmax(0,1fr);align-items:start;gap:36px}}
+.rail{display:grid;gap:14px;min-width:0}
+.results{display:grid;gap:0;min-width:0}
+
+/* input panels */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;display:grid;gap:14px;min-width:0}
+.panel>h2{font-size:19px;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
+.step{font:500 11.5px var(--font-data);letter-spacing:.08em;color:var(--accent)}
+.hint{font-size:13px;color:var(--muted)}
+.field{display:grid;gap:4px;min-width:0}
+.field>label,.lbl{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+input,select{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:8px 10px;min-width:0;width:100%}
+input[type=checkbox]{width:auto;accent-color:var(--accent)}
+input:focus-visible,select:focus-visible,button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.row{display:flex;flex-wrap:wrap;gap:8px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media(max-width:420px){.grid3{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.months{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+@media(min-width:420px){.months{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.months input{text-align:right;font-family:var(--font-data);font-variant-numeric:tabular-nums}
+.months .field>label{text-transform:none;letter-spacing:.02em;font-size:12px}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:14px}
+.check input{margin-top:3px}
+.sample{font-size:13px;background:var(--sun-soft);color:var(--ink);border-radius:6px;padding:8px 10px}
+.btn{appearance:none;font:600 13.5px var(--font-body);border-radius:6px;padding:8px 13px;cursor:pointer;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.small{padding:5px 9px;font-size:12.5px}
+details.fold{border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+details.fold>summary{cursor:pointer;padding:11px 14px;font-weight:700;font-size:14px;list-style:none;display:flex;justify-content:space-between;gap:10px}
+details.fold>summary::-webkit-details-marker{display:none}
+details.fold>summary::after{content:"+";font:500 16px var(--font-data);color:var(--muted)}
+details.fold[open]>summary::after{content:"\2212"}
+details.fold>.body{padding:2px 14px 14px;display:grid;gap:12px}
+
+/* mode visibility */
+body[data-mode="individual"] .only-installer{display:none!important}
+body[data-mode="installer"] .only-individual{display:none!important}
+
+/* results sections */
+.sec{display:grid;gap:14px;padding-block:26px;border-top:1px solid var(--line);min-width:0}
+.sec:first-child{border-top:0;padding-top:4px}
+.kick{font:500 11.5px var(--font-data);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.sec p.lead{font-size:15.5px;max-width:68ch}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px 16px}
+.stat{display:grid;gap:2px;border-top:2px solid var(--ink);padding-top:7px;min-width:0}
+.stat .k{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.stat .v{font:700 clamp(22px,3.6vw,30px)/1.1 var(--font-display);font-stretch:82%;font-variant-numeric:tabular-nums}
+.stat .s{font-size:12.5px;color:var(--muted)}
+.stat.peak{border-top-color:var(--sun)} .stat.low{border-top-color:var(--good)}
+.note{background:var(--surface2);border-radius:6px;padding:10px 12px;font-size:13.5px;color:var(--muted);max-width:78ch}
+.note b{color:var(--ink)}
+.note.warn{border:1px solid var(--warn);color:var(--ink);background:var(--surface)}
+.note.bad{border:1px solid var(--bad);color:var(--ink);background:var(--surface)}
+.note.good{border:1px solid var(--good);color:var(--ink);background:var(--surface)}
+.fig{display:grid;gap:6px;min-width:0}
+.fig figcaption,.cap{font-size:12.5px;color:var(--muted)}
+.chart{width:100%;height:auto;display:block;overflow:visible}
+.ax{fill:var(--muted);font:11px var(--font-data)}
+.axb{fill:var(--ink);font:600 11px var(--font-data)}
+.gl{stroke:var(--line);stroke-width:1}
+.zl{stroke:var(--ink);stroke-width:1.2;opacity:.55}
+.b-acc{fill:var(--accent)} .b-sun{fill:var(--sun)} .b-good{fill:var(--good)} .b-mute{fill:var(--line)}
+.l-acc{stroke:var(--accent);fill:none;stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round}
+.l-sun{stroke:var(--sun);fill:none;stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round}
+.l-mut{stroke:var(--muted);fill:none;stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.l-dash{stroke-dasharray:5 4}
+.a-pos{fill:var(--accent);opacity:.12} .a-neg{fill:var(--bad);opacity:.12}
+.d-acc{fill:var(--accent)} .d-sun{fill:var(--sun)}
+.band{fill:var(--sun);opacity:.12}
+.legend{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:12.5px;color:var(--muted)}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.legend .lc{background:var(--accent)} .legend .ls{background:var(--sun)} .legend .lg{background:var(--good)} .legend .lm{background:var(--muted)}
+
+/* spec plate */
+.plate{background:var(--plate);color:var(--plate-muted);border-radius:10px;padding:18px 20px;display:grid;gap:16px 28px;grid-template-columns:minmax(0,1fr);align-items:end}
+@media(min-width:620px){.plate{grid-template-columns:auto minmax(0,1fr)}}
+.plate .tag{font:500 11px var(--font-data);letter-spacing:.1em;text-transform:uppercase}
+.plate .read{font:500 clamp(46px,10vw,78px)/1 var(--font-data);color:var(--plate-ink);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.plate .read small{font-size:.32em;letter-spacing:0;margin-left:8px;color:var(--plate-muted)}
+.plate dl{margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px 18px}
+.plate dt{font:500 10.5px var(--font-data);letter-spacing:.08em;text-transform:uppercase}
+.plate dd{margin:0;font:600 17px var(--font-body);color:#EAF1F8;font-variant-numeric:tabular-nums}
+
+/* size options */
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.opt{appearance:none;text-align:left;display:grid;gap:2px;padding:10px 12px;border:1px solid var(--line);border-radius:7px;background:var(--surface);color:var(--ink);font:inherit;cursor:pointer;min-width:0}
+.opt:hover{border-color:var(--accent)}
+.opt[aria-pressed="true"]{border:2px solid var(--accent);background:var(--accent-soft);padding:9px 11px}
+.opt .t{font-size:11.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.opt .n{font:700 22px var(--font-display);font-stretch:82%}
+.opt .d{font-size:12.5px;color:var(--muted)}
+
+/* tables */
+.tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums;font-size:14px}
+th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child>th,tr:last-child>td{border-bottom:0}
+thead th{background:var(--surface2);font-size:12.5px;vertical-align:bottom}
+tbody th{font-weight:600;color:var(--muted);font-size:13px;min-width:130px}
+td.r,th.r{text-align:right}
+td.sel,th.sel{background:var(--accent-soft)}
+.tbl-min{min-width:640px}
+.pick{appearance:none;font:700 13.5px var(--font-body);color:var(--ink);background:transparent;border:0;padding:0;cursor:pointer;text-align:left;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
+.pick[aria-pressed="true"]{color:var(--accent);text-decoration-color:var(--accent)}
+.tag-good{color:var(--good);font-weight:700} .tag-bad{color:var(--bad);font-weight:700} .tag-warn{color:var(--warn);font-weight:700}
+.rec{font:600 10.5px var(--font-data);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);display:block}
+
+/* meters + kv */
+.meter{height:14px;background:var(--surface2);border-radius:7px;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--accent);border-radius:7px}
+.meter.over i{background:var(--bad)}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0 28px;margin:0}
+.kv div{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid var(--line);min-width:0}
+.kv dt{color:var(--muted);font-size:13.5px}
+.kv dd{margin:0;font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
+.two{display:grid;gap:18px;grid-template-columns:minmax(0,1fr)}
+@media(min-width:760px){.two{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.list{margin:0;padding-left:18px;display:grid;gap:6px;max-width:74ch}
+.links{display:flex;flex-wrap:wrap;gap:8px}
+.links a{display:inline-block;padding:8px 12px;border:1px solid var(--line);border-radius:6px;background:var(--surface);text-decoration:none;font-weight:600;font-size:13.5px;color:var(--ink)}
+.links a:hover{border-color:var(--accent);color:var(--accent)}
+.src{font-size:12.5px;color:var(--muted);display:grid;gap:3px;padding-left:18px;margin:0}
+.empty{background:var(--surface);border:1px dashed var(--line);border-radius:8px;padding:28px 18px;color:var(--muted);text-align:center}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:9px 14px;border-radius:6px;font-size:13.5px;z-index:40;max-width:calc(100vw - 32px)}
+.foot{border-top:1px solid var(--line);padding-block:20px 40px;color:var(--muted);font-size:12.5px;display:grid;gap:6px;max-width:80ch}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="6" fill="var(--sun)"/><g stroke="var(--sun)" stroke-width="2.2" stroke-linecap="round"><path d="M16 3v4M16 25v4M3 16h4M25 16h4M6.8 6.8l2.8 2.8M22.4 22.4l2.8 2.8M25.2 6.8l-2.8 2.8M9.6 22.4l-2.8 2.8"/></g></svg>
+      <span>Pakistan Solar Planner</span>
+    </div>
+    <div class="seg" role="group" aria-label="Who is using this planner">
+      <button type="button" id="modeInd" aria-pressed="true">I'm an individual</button>
+      <button type="button" id="modeIns" aria-pressed="false">I'm a solar installer</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="intro">
+    <h1 class="only-individual">Size a solar system from your own bills</h1>
+    <h1 class="only-installer">Quote a rooftop system from the customer's bills</h1>
+    <p class="lede only-individual">Enter the units on your last 12 bills and where your roof is. You get the system size that pays back best, what each type of system costs, and the angle to set the panels.</p>
+    <p class="lede only-installer">Size, price and lay out a system from 12 months of bills. Every price, loss and tariff assumption is editable, and the quote, bill of quantities and row spacing update as you change them.</p>
+    <p class="stamp">Prices, tariffs and net-billing rules checked 9 Oct 2026</p>
+  </section>
+
+  <div class="layout">
+    <div class="rail" id="rail">
+
+      <section class="panel" id="pUnits">
+        <h2><span class="step">STEP 1</span>Units used in the last 12 months</h2>
+        <p class="hint">Type the units (kWh) printed on each monthly bill, under the calendar month it covers.</p>
+        <div class="sample" id="sampleBanner" hidden>Sample values for a Lahore home are loaded. Replace them with your own bills.</div>
+        <div class="months" id="monthsGrid"></div>
+        <div class="row">
+          <button type="button" class="btn small" id="btnSample">Load sample</button>
+          <button type="button" class="btn small" id="btnClear">Clear all</button>
+        </div>
+        <div class="field">
+          <label for="category">Connection type</label>
+          <select id="category">
+            <option value="domestic">Home (domestic slabs)</option>
+            <option value="flat">Shop, office or other (one flat rate)</option>
+          </select>
+        </div>
+        <div class="field" id="flatWrap" hidden>
+          <label for="flatRate">Average rate on your bill (Rs per unit, with taxes)</label>
+          <input type="number" id="flatRate" min="1" step="0.5" inputmode="decimal">
+        </div>
+      </section>
+
+      <section class="panel" id="pLoc">
+        <h2><span class="step">STEP 2</span>Roof and location</h2>
+        <div class="field">
+          <label for="city">City</label>
+          <select id="city"></select>
+        </div>
+        <div class="grid2" id="customLoc" hidden>
+          <div class="field"><label for="latIn">Latitude (°N)</label><input type="number" id="latIn" step="0.01" inputmode="decimal"></div>
+          <div class="field"><label for="lonIn">Longitude (°E)</label><input type="number" id="lonIn" step="0.01" inputmode="decimal"></div>
+        </div>
+        <div class="grid2">
+          <div class="field"><label for="areaVal">Roof area</label><input type="number" id="areaVal" min="0" step="any" inputmode="decimal"></div>
+          <div class="field"><label for="areaUnit">Unit</label>
+            <select id="areaUnit">
+              <option value="sqft">sq ft</option>
+              <option value="sqm">sq m</option>
+              <option value="marla">marla</option>
+              <option value="kanal">kanal</option>
+              <option value="sqyd">sq yard</option>
+            </select>
+          </div>
+        </div>
+        <p class="hint">On a single-storey house the roof is close to the plot size. A 5 marla plot is about 1,361 sq ft and a 10 marla plot about 2,722 sq ft.</p>
+        <div class="grid2">
+          <div class="field"><label for="usablePct">Free of tanks, stairs, shade</label>
+            <select id="usablePct">
+              <option value="40">About 40%</option><option value="50">About 50%</option><option value="60">About 60%</option>
+              <option value="70">About 70%</option><option value="80">About 80%</option><option value="90">About 90%</option>
+            </select>
+          </div>
+          <div class="field"><label for="roofType">Where panels go</label>
+            <select id="roofType">
+              <option value="flat">Flat roof (tilted frames)</option>
+              <option value="sloped">Sloped roof (flush)</option>
+              <option value="ground">Open ground</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid2" id="slopeWrap" hidden>
+          <div class="field"><label for="slope">Roof slope (°)</label><input type="number" id="slope" min="0" max="60" step="1" inputmode="numeric"></div>
+          <div class="field"><label for="azDevS">Roof faces away from south by (°)</label><input type="number" id="azDevS" min="0" max="180" step="5" inputmode="numeric"></div>
+        </div>
+      </section>
+
+      <section class="panel" id="pNeeds">
+        <h2><span class="step">STEP 3</span>What you need from it</h2>
+        <div class="field">
+          <label for="backup">Power during outages</label>
+          <select id="backup">
+            <option value="no">Not needed, grid is mostly reliable</option>
+            <option value="yes">Yes, keep my essentials running</option>
+          </select>
+        </div>
+        <div class="grid2" id="backupWrap" hidden>
+          <div class="field"><label for="loadKw">Load to back up</label>
+            <select id="loadKw">
+              <option value="0.8">Lights, fans, router (0.8 kW)</option>
+              <option value="1.5">Plus fridge, TV (1.5 kW)</option>
+              <option value="2.5">Plus washing machine, pump (2.5 kW)</option>
+              <option value="3.5">Plus one AC (3.5 kW)</option>
+              <option value="5">Plus two ACs (5 kW)</option>
+            </select>
+          </div>
+          <div class="field"><label for="hours">Hours of backup</label>
+            <select id="hours"><option value="2">2 hours</option><option value="4">4 hours</option><option value="6">6 hours</option><option value="8">8 hours</option><option value="12">12 hours</option></select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="dayShare">Share of your power used in daylight</label>
+          <select id="dayShare">
+            <option value="30">About 30% (out all day, home at night)</option>
+            <option value="40">About 40%</option>
+            <option value="50">About 50% (typical home)</option>
+            <option value="60">About 60%</option>
+            <option value="70">About 70% (shop, office, home office)</option>
+          </select>
+        </div>
+        <div class="field only-individual">
+          <label for="priority">What matters most</label>
+          <select id="priority">
+            <option value="4">Fastest payback, smaller system</option>
+            <option value="6">Balanced</option>
+            <option value="9">Biggest bill cut over time</option>
+          </select>
+        </div>
+        <div class="field only-individual">
+          <label for="tier">Equipment quality</label>
+          <select id="tier">
+            <option value="budget">Budget</option>
+            <option value="standard">Standard (Tier-1 panels)</option>
+            <option value="premium">Premium (top-brand inverter)</option>
+          </select>
+        </div>
+        <div class="field only-individual">
+          <label for="quote">Quote you were given (optional, Rs)</label>
+          <input type="number" id="quote" min="0" step="1000" inputmode="numeric" placeholder="e.g. 850000">
+        </div>
+        <label class="check only-individual"><input type="checkbox" id="wantNear"><span>Help me find an installer near me</span></label>
+      </section>
+
+      <section class="panel only-installer" id="pClient">
+        <h2><span class="step">QUOTE</span>Customer details</h2>
+        <div class="field"><label for="client">Customer name</label><input type="text" id="client" autocomplete="off"></div>
+        <div class="field"><label for="site">Site address</label><input type="text" id="site" autocomplete="off"></div>
+        <div class="grid2">
+          <div class="field"><label for="qref">Quote reference</label><input type="text" id="qref" autocomplete="off"></div>
+          <div class="field"><label for="tier2">Equipment tier</label>
+            <select id="tier2"><option value="budget">Budget</option><option value="standard">Standard</option><option value="premium">Premium</option></select>
+          </div>
+        </div>
+      </section>
+
+      <details class="fold only-installer" id="pDesign" open>
+        <summary>Design settings</summary>
+        <div class="body">
+          <div class="grid2">
+            <div class="field"><label for="wp">Panel</label>
+              <select id="wp"><option value="585">585 W (2.28 × 1.13 m)</option><option value="620">620 W (2.38 × 1.13 m)</option><option value="720">720 W (2.38 × 1.30 m)</option></select>
+            </div>
+            <div class="field"><label for="T">Accept payback of up to (years)</label><input type="number" id="T" min="1" max="15" step="0.5" inputmode="decimal"></div>
+          </div>
+          <div class="grid2">
+            <div class="field"><label for="sizeOv">Fix system size (kWp)</label><input type="number" id="sizeOv" min="0" step="0.1" inputmode="decimal" placeholder="auto"></div>
+            <div class="field"><label for="battOv">Fix battery (kWh)</label><input type="number" id="battOv" min="0" step="1" inputmode="decimal" placeholder="auto"></div>
+          </div>
+          <div class="grid2">
+            <div class="field"><label for="tiltMode">Panel tilt</label>
+              <select id="tiltMode"><option value="auto">Best for this load</option><option value="low">Low profile (15°)</option><option value="custom">Set my own</option></select>
+            </div>
+            <div class="field"><label for="tiltCustom">Own tilt (°)</label><input type="number" id="tiltCustom" min="0" max="60" step="1" inputmode="numeric"></div>
+          </div>
+          <div class="grid2">
+            <div class="field"><label for="azDev">Panels face away from south (°)</label><input type="number" id="azDev" min="0" max="180" step="5" inputmode="numeric"></div>
+            <div class="field"><label for="hoursSun">Shade-free hours around noon</label><input type="number" id="hoursSun" min="2" max="4" step="0.5" inputmode="decimal"></div>
+          </div>
+          <div class="grid3">
+            <div class="field"><label for="loss">System losses %</label><input type="number" id="loss" min="0" max="40" step="0.5" inputmode="decimal"></div>
+            <div class="field"><label for="shade">Shading loss %</label><input type="number" id="shade" min="0" max="50" step="1" inputmode="decimal"></div>
+            <div class="field"><label for="dcac">Array ÷ inverter</label><input type="number" id="dcac" min="1" max="1.6" step="0.05" inputmode="decimal"></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="fold only-installer" id="pPrice" open>
+        <summary>Price book (Rs)</summary>
+        <div class="body">
+          <p class="hint">Starts from the 9 Oct 2026 market snapshot for the tier you pick. Change any line and every quote recalculates.</p>
+          <div class="grid2">
+            <div class="field"><label for="pPanel">Panels, per watt</label><input type="number" id="pPanel" min="0" step="0.5" inputmode="decimal"></div>
+            <div class="field"><label for="pStruct">Structure, per watt</label><input type="number" id="pStruct" min="0" step="0.5" inputmode="decimal"></div>
+            <div class="field"><label for="pInvG">On-grid inverter, per kW</label><input type="number" id="pInvG" min="0" step="500" inputmode="numeric"></div>
+            <div class="field"><label for="pInvH">Hybrid inverter, per kW</label><input type="number" id="pInvH" min="0" step="500" inputmode="numeric"></div>
+            <div class="field"><label for="pInvO">Off-grid inverter, per kW</label><input type="number" id="pInvO" min="0" step="500" inputmode="numeric"></div>
+            <div class="field"><label for="pLi">Lithium battery, per kWh</label><input type="number" id="pLi" min="0" step="500" inputmode="numeric"></div>
+            <div class="field"><label for="pPb">Lead-acid battery, per kWh</label><input type="number" id="pPb" min="0" step="500" inputmode="numeric"></div>
+            <div class="field"><label for="pBos">Cables, breakers, earthing, per watt</label><input type="number" id="pBos" min="0" step="0.5" inputmode="decimal"></div>
+            <div class="field"><label for="pBosF">Fixed electrical items</label><input type="number" id="pBosF" min="0" step="1000" inputmode="numeric"></div>
+            <div class="field"><label for="pLab">Installation labour, per watt</label><input type="number" id="pLab" min="0" step="0.5" inputmode="decimal"></div>
+            <div class="field"><label for="pPaper">Meter and DISCO paperwork</label><input type="number" id="pPaper" min="0" step="1000" inputmode="numeric"></div>
+            <div class="field"><label for="pMargin">Your margin %</label><input type="number" id="pMargin" min="0" max="60" step="0.5" inputmode="decimal"></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="fold only-installer" id="pTariff">
+        <summary>Tariff and finance assumptions</summary>
+        <div class="body">
+          <div class="grid2">
+            <div class="field"><label for="buyback">Export credit (Rs per unit)</label><input type="number" id="buyback" min="0" step="0.5" inputmode="decimal"></div>
+            <div class="field"><label for="fpa">Fuel and quarterly adjustment (Rs per unit)</label><input type="number" id="fpa" min="0" step="0.25" inputmode="decimal"></div>
+            <div class="field"><label for="esc">Tariff rise per year %</label><input type="number" id="esc" min="0" max="20" step="0.5" inputmode="decimal"></div>
+            <div class="field"><label for="deg">Panel ageing per year %</label><input type="number" id="deg" min="0" max="2" step="0.1" inputmode="decimal"></div>
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <div class="results" id="results"></div>
+  </div>
+
+  <footer class="foot">
+    <p>These are planning estimates, usually within about 10 to 15% of a surveyed design. Sun data is modelled from city averages. A site visit should confirm roof strength, shading, cable runs and the inverter size before anything is bought.</p>
+    <p>The page cannot browse the web while you use it. Prices and rules shown were gathered by web search on 9 Oct 2026; edit any price you have a newer quote for.</p>
+  </footer>
+</main>
+<div id="toast" role="status" hidden></div>
+<script>
+(function(){'use strict';
+/* ================= DATA ================= */
+const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const DAYS=[31,28,31,30,31,30,31,31,30,31,30,31];
+const MEANDAY=[17,47,75,105,135,162,198,228,258,288,318,344];
+const SAMPLE=[310,290,380,520,780,960,1040,990,820,560,360,320];
+
+/* Reference cities: annual horizontal sun (kWh/m2/day) are modelled averages, good to about +/-8%. */
+const CITIES=[
+  {id:'lahore',n:'Lahore',p:'Punjab',lat:31.55,lon:74.34,g:5.0,z:'plain',d:'LESCO'},
+  {id:'faisalabad',n:'Faisalabad',p:'Punjab',lat:31.42,lon:73.08,g:5.1,z:'plain',d:'FESCO'},
+  {id:'multan',n:'Multan',p:'Punjab',lat:30.20,lon:71.47,g:5.3,z:'plain',d:'MEPCO'},
+  {id:'gujranwala',n:'Gujranwala',p:'Punjab',lat:32.16,lon:74.19,g:4.95,z:'plain',d:'GEPCO'},
+  {id:'sialkot',n:'Sialkot',p:'Punjab',lat:32.49,lon:74.53,g:4.9,z:'north',d:'GEPCO'},
+  {id:'sargodha',n:'Sargodha',p:'Punjab',lat:32.08,lon:72.67,g:5.1,z:'plain',d:'FESCO'},
+  {id:'sahiwal',n:'Sahiwal',p:'Punjab',lat:30.67,lon:73.11,g:5.2,z:'plain',d:'MEPCO'},
+  {id:'bahawalpur',n:'Bahawalpur',p:'Punjab',lat:29.40,lon:71.68,g:5.4,z:'south',d:'MEPCO'},
+  {id:'rahimyar',n:'Rahim Yar Khan',p:'Punjab',lat:28.42,lon:70.30,g:5.5,z:'south',d:'MEPCO'},
+  {id:'dgkhan',n:'Dera Ghazi Khan',p:'Punjab',lat:30.05,lon:70.64,g:5.4,z:'south',d:'MEPCO'},
+  {id:'islamabad',n:'Islamabad',p:'Islamabad / Rawalpindi',lat:33.68,lon:73.05,g:4.9,z:'north',d:'IESCO'},
+  {id:'rawalpindi',n:'Rawalpindi',p:'Islamabad / Rawalpindi',lat:33.60,lon:73.04,g:4.9,z:'north',d:'IESCO'},
+  {id:'karachi',n:'Karachi',p:'Sindh',lat:24.86,lon:67.01,g:5.3,z:'coast',d:'K-Electric'},
+  {id:'hyderabad',n:'Hyderabad',p:'Sindh',lat:25.39,lon:68.37,g:5.5,z:'south',d:'HESCO'},
+  {id:'nawabshah',n:'Nawabshah',p:'Sindh',lat:26.25,lon:68.41,g:5.6,z:'south',d:'HESCO'},
+  {id:'sukkur',n:'Sukkur',p:'Sindh',lat:27.70,lon:68.86,g:5.6,z:'south',d:'SEPCO'},
+  {id:'larkana',n:'Larkana',p:'Sindh',lat:27.56,lon:68.21,g:5.6,z:'south',d:'SEPCO'},
+  {id:'peshawar',n:'Peshawar',p:'Khyber Pakhtunkhwa',lat:34.01,lon:71.58,g:4.95,z:'north',d:'PESCO'},
+  {id:'mardan',n:'Mardan',p:'Khyber Pakhtunkhwa',lat:34.20,lon:72.04,g:4.9,z:'north',d:'PESCO'},
+  {id:'abbottabad',n:'Abbottabad',p:'Khyber Pakhtunkhwa',lat:34.15,lon:73.21,g:4.7,z:'north',d:'PESCO'},
+  {id:'mingora',n:'Mingora (Swat)',p:'Khyber Pakhtunkhwa',lat:34.77,lon:72.36,g:4.6,z:'north',d:'PESCO'},
+  {id:'dikhan',n:'Dera Ismail Khan',p:'Khyber Pakhtunkhwa',lat:31.83,lon:70.90,g:5.3,z:'plain',d:'PESCO'},
+  {id:'quetta',n:'Quetta',p:'Balochistan',lat:30.18,lon:66.99,g:5.8,z:'highland',d:'QESCO'},
+  {id:'khuzdar',n:'Khuzdar',p:'Balochistan',lat:27.81,lon:66.61,g:5.8,z:'south',d:'QESCO'},
+  {id:'gwadar',n:'Gwadar',p:'Balochistan',lat:25.13,lon:62.32,g:5.5,z:'coast',d:'QESCO'},
+  {id:'gilgit',n:'Gilgit',p:'Gilgit-Baltistan',lat:35.92,lon:74.31,g:4.9,z:'highland',d:'Gilgit-Baltistan power dept'},
+  {id:'skardu',n:'Skardu',p:'Gilgit-Baltistan',lat:35.30,lon:75.63,g:4.9,z:'highland',d:'Gilgit-Baltistan power dept'}
+];
+/* Monthly clearness shape by climate zone (monsoon dip in Jul-Aug, winter haze in the north). */
+const KT={
+  plain:[.56,.58,.60,.62,.62,.60,.52,.52,.62,.68,.67,.60],
+  north:[.50,.50,.52,.56,.62,.62,.46,.46,.62,.67,.65,.56],
+  south:[.64,.65,.65,.65,.64,.58,.54,.56,.64,.69,.69,.65],
+  coast:[.64,.66,.66,.64,.60,.54,.47,.48,.58,.67,.69,.65],
+  highland:[.60,.58,.58,.62,.68,.72,.70,.70,.72,.72,.68,.62]
+};
+/* Mean daytime air temperature (deg C) by zone, used for the heat loss on panels. */
+const TEMP={
+  plain:[18,21,27,34,39,40,36,35,34,32,26,20],
+  north:[13,15,20,26,32,36,33,31,30,26,20,14],
+  south:[23,26,32,37,40,40,37,35,36,35,30,25],
+  coast:[25,26,29,32,34,34,33,32,32,33,30,26],
+  highland:[8,10,16,22,27,32,32,31,28,22,15,9]
+};
+const PANELS={585:{l:2.278,w:1.134},620:{l:2.382,w:1.134},720:{l:2.384,w:1.303}};
+const AREA={sqft:0.092903,sqm:1,marla:25.2929,kanal:505.857,sqyd:0.836127};
+/* NEPRA domestic slabs for unprotected consumers; every unit is billed at the slab reached. */
+const SLABS=[[100,22.44],[200,28.91],[300,33.10],[400,37.99],[500,40.22],[600,41.62],[700,42.76],[Infinity,47.69]];
+const TIERS={
+  budget:{panelW:38,invG:16000,invH:28000,invO:20000,li:38000,pb:20000,struct:9,bos:7,bosF:12000,lab:5,paper:50000,margin:12},
+  standard:{panelW:44,invG:22000,invH:38000,invO:26000,li:46000,pb:23000,struct:12,bos:9,bosF:15000,lab:6,paper:60000,margin:12},
+  premium:{panelW:50,invG:50000,invH:65000,invO:38000,li:62000,pb:30000,struct:16,bos:12,bosF:20000,lab:8,paper:70000,margin:15}
+};
+const TYPES={
+  ongrid:{label:'On-grid',sub:'No battery'},
+  hybridLi:{label:'Hybrid + lithium',sub:'Battery backup'},
+  hybridPb:{label:'Hybrid + lead-acid',sub:'Cheaper battery, shorter life'},
+  offgrid:{label:'Off-grid',sub:'No grid connection'}
+};
+const INV_STD=[3,4,5,6,8,10,12,15,20,25,30,40,50,60,80,100,125,150];
+
+function defaultState(){
+  return {mode:'individual',isSample:true,units:SAMPLE.slice(),category:'domestic',flatRate:55,
+    cityId:'lahore',lat:31.55,lon:74.34,areaVal:1500,areaUnit:'sqft',usablePct:60,roofType:'flat',slope:20,azDev:0,
+    backup:'no',loadKw:1.5,hours:4,dayShare:50,T:6,tier:'standard',quote:'',wantNear:false,
+    client:'',site:'',qref:'',wp:585,sizeOv:'',battOv:'',tiltMode:'auto',tiltCustom:20,hoursSun:3,
+    loss:15,shade:0,dcac:1.15,buyback:11,fpa:1.5,esc:4,deg:0.5,
+    P:Object.assign({},TIERS.standard),sizeKey:'ideal',selType:null};
+}
+
+/* ================= MATH ================= */
+const rad=d=>d*Math.PI/180, deg=r=>r*180/Math.PI;
+const clamp=(x,a,b)=>Math.min(b,Math.max(a,x));
+const sum=a=>a.reduce((s,v)=>s+v,0);
+const decl=n=>23.45*Math.sin(rad(360*(284+n)/365));
+
+function Rb(lat,beta,d){
+  const p=rad(lat),b=rad(beta),dd=rad(d);
+  const ws=Math.acos(clamp(-Math.tan(p)*Math.tan(dd),-1,1));
+  const wst=Math.min(ws,Math.acos(clamp(-Math.tan(p-b)*Math.tan(dd),-1,1)));
+  const num=Math.cos(p-b)*Math.cos(dd)*Math.sin(wst)+wst*Math.sin(p-b)*Math.sin(dd);
+  const den=Math.cos(p)*Math.cos(dd)*Math.sin(ws)+ws*Math.sin(p)*Math.sin(dd);
+  return den>0?Math.max(0,num/den):1;
+}
+function buildLoc(lat,A,zone){
+  const p=rad(lat),H0=[],raw=[];
+  for(let m=0;m<12;m++){
+    const n=MEANDAY[m],d=rad(decl(n));
+    const ws=Math.acos(clamp(-Math.tan(p)*Math.tan(d),-1,1));
+    const h0=(24/Math.PI)*1.367*(1+0.033*Math.cos(rad(360*n/365)))*(Math.cos(p)*Math.cos(d)*Math.sin(ws)+ws*Math.sin(p)*Math.sin(d));
+    H0.push(h0);raw.push(h0*KT[zone][m]);
+  }
+  let mean=0;for(let m=0;m<12;m++)mean+=raw[m]*DAYS[m];mean/=365;
+  const k=A/mean,GHI=raw.map(x=>x*k),Kt=GHI.map((g,m)=>clamp(g/H0[m],0.2,0.8));
+  return {H0,GHI,Kt,temp:TEMP[zone],lat};
+}
+function transpose(lm,lat,beta,m){
+  const n=MEANDAY[m],d=decl(n),p=rad(lat),dr=rad(d);
+  const ws=deg(Math.acos(clamp(-Math.tan(p)*Math.tan(dr),-1,1)));
+  const Kt=lm.Kt[m],H=lm.GHI[m];
+  let fd=ws<=81.4?1.391-3.560*Kt+4.189*Kt*Kt-2.137*Kt*Kt*Kt:1.311-3.022*Kt+3.427*Kt*Kt-1.821*Kt*Kt*Kt;
+  fd=clamp(fd,0.12,0.95);
+  const Hd=H*fd,Hb=H-Hd,b=rad(beta);
+  return Hb*Rb(lat,beta,d)+Hd*(1+Math.cos(b))/2+H*0.2*(1-Math.cos(b))/2;
+}
+/* kWh produced per kWp per day, for every tilt 0..60 and month */
+function buildYT(lm,lat,S){
+  const pr=1-S.loss/100,sh=1-S.shade/100,out=[];
+  for(let b=0;b<=60;b++){
+    const row=[];
+    for(let m=0;m<12;m++){
+      const ht=transpose(lm,lat,b,m);
+      const tc=lm.temp[m]+20,tf=1-0.0034*Math.max(0,tc-25);
+      const azf=1-0.18*Math.min(1,b/25)*(1-Math.cos(rad(S.azDev||0)));
+      row.push(Math.max(0,ht*pr*tf*azf*sh));
+    }
+    out.push(row);
+  }
+  return out;
+}
+function energy(YT,b,months,w){let v=0;for(const m of months)v+=YT[b][m]*DAYS[m]*(w?w[m]:1);return v;}
+function bestTilt(YT,months,w){let best=0,bv=-1;for(let b=0;b<=60;b++){const v=energy(YT,b,months,w);if(v>bv+1e-9){bv=v;best=b;}}return best;}
+function sunAlt(lat,n,hr){const p=rad(lat),d=rad(decl(n)),h=rad(15*(hr-12));return deg(Math.asin(clamp(Math.sin(p)*Math.sin(d)+Math.cos(p)*Math.cos(d)*Math.cos(h),-1,1)));}
+function areaPerPanel(roofType,tilt,lat,panel,hrs){
+  if(roofType==='sloped')return panel.l*panel.w*1.1;
+  const p=rad(lat),d=rad(-23.45),h=rad(15*hrs);
+  const sinA=Math.sin(p)*Math.sin(d)+Math.cos(p)*Math.cos(d)*Math.cos(h);
+  const alt=Math.max(rad(4),Math.asin(clamp(sinA,-1,1)));
+  const cosG=clamp((Math.sin(alt)*Math.sin(p)-Math.sin(d))/(Math.cos(alt)*Math.cos(p)),0,1);
+  const t=rad(tilt),H=panel.l*Math.sin(t),S=H*cosG/Math.tan(alt);
+  const pitch=panel.l*Math.cos(t)+S;
+  return {pitch,gap:S,perPanel:(panel.w+0.03)*pitch*1.08};
+}
+function haversine(a,b,c,d){const R=6371,dl=rad(c-a),dn=rad(d-b);const x=Math.sin(dl/2)**2+Math.cos(rad(a))*Math.cos(rad(c))*Math.sin(dn/2)**2;return 2*R*Math.asin(Math.sqrt(x));}
+function resolveLoc(S){
+  if(S.cityId==='custom'){
+    let lat=+S.lat,lon=+S.lon;if(!isFinite(lat)||!isFinite(lon)){lat=31.55;lon=74.34;}
+    let ref=CITIES[0],bd=1e9;for(const c of CITIES){const d=haversine(lat,lon,c.lat,c.lon);if(d<bd){bd=d;ref=c;}}
+    return {lat,lon,ref,city:'Your location',disco:ref.d+' (nearest city\'s utility, confirm on your bill)',custom:true,refKm:bd};
+  }
+  const c=CITIES.find(x=>x.id===S.cityId)||CITIES[0];
+  return {lat:c.lat,lon:c.lon,ref:c,city:c.n,disco:c.d,custom:false};
+}
+function makeBill(S){
+  if(S.category==='flat'){const r=+S.flatRate||0;return u=>u*r;}
+  const fpa=+S.fpa||0;
+  return u=>{
+    if(u<=0)return 35;
+    let rate=SLABS[SLABS.length-1][1];for(const s of SLABS){if(u<=s[0]){rate=s[1];break;}}
+    const E=u*rate,FC=u*3.23,A=u*fpa,D=0.015*E,base=E+FC+A+D;
+    return base*1.18+35;
+  };
+}
+function invKwFor(kWp,dcac){const need=kWp/(dcac||1.15);for(const s of INV_STD)if(s>=need-1e-9)return s;return Math.ceil(need/25)*25;}
+
+/* ================= MODEL ================= */
+function compute(S){
+  const R={};
+  const units=S.units.map(v=>Math.max(0,+v||0));
+  const total=sum(units);
+  R.units=units;R.total=total;R.has=total>0;
+  const L=resolveLoc(S);R.loc=L;
+  const lm=buildLoc(L.lat,L.ref.g,L.ref.z);R.lm=lm;
+  if(!R.has)return R;
+
+  const billFn=makeBill(S);
+  const avg=total/12;
+  let pi=0,li=0;units.forEach((u,i)=>{if(u>units[pi])pi=i;if(u<units[li])li=i;});
+  R.avg=avg;R.peak={v:units[pi],i:pi};R.low={v:units[li],i:li};
+  R.summerAvg=sum([4,5,6,7,8].map(i=>units[i]))/5;
+  R.winterAvg=sum([10,11,0,1].map(i=>units[i]))/4;
+  R.billNow=sum(units.map(billFn));R.effRate=R.billNow/total;
+  R.billMonths=units.map(billFn);
+
+  const P=S.P,wp=+S.wp,panel=PANELS[wp]||PANELS[585];
+  const YT=buildYT(lm,L.lat,S);R.YT=YT;
+  const all=[0,1,2,3,4,5,6,7,8,9,10,11];
+  const wC=units.map(u=>u/total);
+  const tAnnual=bestTilt(YT,all,null),tWeighted=bestTilt(YT,all,wC);
+  const winter=[9,10,11,0,1,2],summer=[3,4,5,6,7,8];
+  const tilt={annual:tAnnual,weighted:tWeighted,winter:bestTilt(YT,winter,null),summer:bestTilt(YT,summer,null)};
+  let tiltUsed,tiltReason='best';
+  if(S.roofType==='sloped'){tiltUsed=clamp(+S.slope||0,0,60);tiltReason='roof';}
+  else if(S.tiltMode==='custom'){tiltUsed=clamp(+S.tiltCustom||0,0,60);tiltReason='custom';}
+  else if(S.tiltMode==='low'){tiltUsed=15;tiltReason='low';}
+  else tiltUsed=clamp(tWeighted,10,45);
+  tilt.reduced=false;
+
+  const areaM2=(+S.areaVal||0)*(AREA[S.areaUnit]||1)*(S.usablePct/100);
+  R.usableM2=areaM2;R.panel=panel;R.wp=wp;
+
+  function plan(tl){
+    const b=Math.round(clamp(tl,0,60)),Y=YT[b];
+    const yr=sum(Y.map((y,m)=>y*DAYS[m]));
+    const ap=areaPerPanel(S.roofType,b,L.lat,panel,+S.hoursSun||3);
+    const perPanel=typeof ap==='number'?ap:ap.perPanel;
+    const roofN=Math.max(0,Math.floor(areaM2/perPanel));
+
+    function costOf(key,kWp,n,battKwh){
+      const W=kWp*1000,invKw=invKwFor(kWp,S.dcac);
+      const rate=key==='ongrid'?P.invG:key==='offgrid'?P.invO:P.invH;
+      const floor=key==='hybridLi'||key==='hybridPb'?130000:90000;
+      const invCost=Math.max(floor,invKw*rate);
+      const panels=n*wp*P.panelW;
+      const battCost=key==='ongrid'?0:battKwh*(key==='hybridPb'?P.pb:P.li);
+      const structure=W*P.struct,bos=W*P.bos+P.bosF,labour=W*P.lab,paper=key==='offgrid'?0:P.paper;
+      const sub=panels+invCost+battCost+structure+bos+labour+paper;
+      const margin=sub*P.margin/100;
+      const lines=[
+        {k:'panels',label:'Solar panels',qty:n+' × '+wp+' W',amount:panels},
+        {k:'inv',label:(key==='ongrid'?'On-grid':key==='offgrid'?'Off-grid':'Hybrid')+' inverter',qty:invKw+' kW',amount:invCost}
+      ];
+      if(battCost>0)lines.push({k:'batt',label:key==='hybridPb'?'Lead-acid battery bank':'Lithium (LiFePO4) battery',qty:battKwh.toFixed(1)+' kWh',amount:battCost});
+      lines.push({k:'struct',label:'Mounting structure (galvanised)',qty:kWp.toFixed(2)+' kWp',amount:structure});
+      lines.push({k:'bos',label:'DC and AC cables, breakers, surge protection, earthing',qty:'1 set',amount:bos});
+      lines.push({k:'lab',label:'Installation labour and commissioning',qty:kWp.toFixed(2)+' kWp',amount:labour});
+      if(paper>0)lines.push({k:'paper',label:'Bidirectional meter, DISCO paperwork and fees',qty:'1',amount:paper});
+      lines.push({k:'margin',label:'Installer margin ('+P.margin+'%)',qty:'',amount:margin});
+      return {lines,sub,margin,total:sub+margin,invKw,invCost,battCost};
+    }
+    function simulate(kWp,bat,off){
+      let gen=0,selfS=0,expInc=0,expK=0,impK=0,before=0,after=0;const mo=[];
+      for(let m=0;m<12;m++){
+        const dm=DAYS[m],C=units[m],c=C/dm,g=kWp*Y[m];
+        const b0=billFn(C);
+        if(off){gen+=g*dm;before+=b0;selfS+=b0;mo.push({gen:g*dm,imp:0,exp:0,b0,b1:0});continue;}
+        const dayL=S.dayShare/100*c,selfD=Math.min(g,dayL),surplus=g-selfD;
+        let disc=0;if(bat)disc=Math.min(bat.usable,surplus*bat.eta,Math.max(0,c-dayL));
+        const impD=Math.max(0,c-selfD-disc),expD=Math.max(0,surplus-(bat?disc/bat.eta:0));
+        const impM=impD*dm,expM=expD*dm,b1=billFn(impM);
+        gen+=g*dm;expK+=expM;impK+=impM;before+=b0;after+=b1-expM*S.buyback;selfS+=b0-b1;expInc+=expM*S.buyback;
+        mo.push({gen:g*dm,imp:impM,exp:expM,b0,b1});
+      }
+      return {gen,expK,impK,before,after,selfSave:selfS,expInc,saving:selfS+expInc,mo};
+    }
+    function cashflow(t,noExport){
+      let cum=-t.total;const arr=[cum];let pb=null;
+      const invRep=0.7*t.cost.invCost*(1+P.margin/100),battRep=t.cost.battCost*(1+P.margin/100);
+      for(let y=1;y<=25;y++){
+        const dg=Math.pow(1-S.deg/100,y-1);
+        const self=t.sim.selfSave*dg*Math.pow(1+S.esc/100,y-1),exp=noExport?0:t.sim.expInc*dg;
+        let rep=0;
+        if(y===12)rep+=invRep;
+        if((t.key==='hybridLi'||t.key==='offgrid')&&y===13)rep+=0.6*battRep;
+        if(t.key==='hybridPb'&&y%4===0&&y<25)rep+=battRep;
+        const flow=self+exp-rep,prev=cum;cum+=flow;arr.push(cum);
+        if(pb===null&&cum>=0&&flow>0)pb=(y-1)+(-prev)/flow;
+      }
+      return {arr,pb,net:cum};
+    }
+    function base(key,n,Bnom){
+      const kWp=n*wp/1000;let bat=null,battKwh=0,usable=0;
+      if(key==='hybridLi'){battKwh=Bnom;usable=0.9*Bnom;bat={usable,eta:0.92};}
+      if(key==='hybridPb'){usable=0.9*Bnom;battKwh=usable/0.5;bat={usable,eta:0.80};}
+      const sim=simulate(kWp,bat,false),cost=costOf(key,kWp,n,battKwh);
+      return {key,n,kWp,battKwh,usable,sim,cost,total:cost.total};
+    }
+    function finish(t){
+      const a=cashflow(t,false),b=cashflow(t,true);
+      t.cf=a.arr;t.payback=a.pb;t.net25=a.net;t.payback0=b.pb;
+      t.backupHrs=t.usable>0?t.usable/(+S.loadKw||1):0;
+      t.billAfterAvg=Math.max(0,(t.sim.before-t.sim.saving))/12;
+      return t;
+    }
+    function offgrid(){
+      let s=0,night=0;
+      for(let m=0;m<12;m++){const c=units[m]/DAYS[m];s=Math.max(s,c/(Math.max(0.5,Y[m])*0.88));night=Math.max(night,c*(1-S.dayShare/100));}
+      const n=Math.max(2,Math.ceil(s*1000/wp)),kWp=n*wp/1000;
+      const battKwh=Math.max(5,Math.ceil(night*1.2/5)*5),usable=0.9*battKwh;
+      const sim=simulate(kWp,null,true),cost=costOf('offgrid',kWp,n,battKwh);
+      return finish({key:'offgrid',n,kWp,battKwh,usable,sim:Object.assign(sim,{expInc:0,saving:sim.before,selfSave:sim.before}),cost,total:cost.total});
+    }
+
+    const Bdef=+S.battOv>0?+S.battOv:(S.backup==='yes'?Math.max(5,Math.ceil((+S.loadKw)*(+S.hours)/0.9/5)*5):5);
+    const sizingKey=S.backup==='yes'?'hybridLi':'ongrid';
+    const nMin=Math.max(2,Math.ceil(1000/wp));
+    const nFull=Math.max(nMin,Math.ceil(total/yr*1000/wp));
+    const nMax=Math.min(Math.ceil(nFull*1.35)+2,Math.ceil(150000/wp));
+    let bestN=nMin,bestJ=-Infinity;const curve=[];
+    for(let n=nMin;n<=nMax;n++){
+      const e=base(sizingKey,n,Bdef),J=e.sim.saving*S.T-e.total;
+      curve.push({n,kWp:e.kWp,saving:e.sim.saving,costT:e.total/S.T,J});
+      if(J>bestJ){bestJ=J;bestN=n;}
+    }
+    let nDay=nMin;for(let n=nMin;n<=nFull;n++){nDay=n;if(n*wp/1000*yr>=S.dayShare/100*total)break;}
+    const sizes={daytime:Math.min(nDay,nFull),ideal:Math.min(bestN,nFull),offset:nFull,roof:roofN};
+    const weak=bestJ<=0;
+    let n=sizes[S.sizeKey]||sizes.ideal;
+    let limited=false;
+    if(S.sizeKey!=='roof'&&n>roofN){n=roofN;limited=true;}
+    if(+S.sizeOv>0){n=Math.max(1,Math.round(+S.sizeOv*1000/wp));limited=n>roofN;}
+    const overRoof=n>roofN;
+    const types={};
+    if(n>0){
+      types.ongrid=finish(base('ongrid',n,0));
+      types.hybridLi=finish(base('hybridLi',n,Bdef));
+      types.hybridPb=finish(base('hybridPb',n,Bdef));
+      types.offgrid=offgrid();
+    }
+    const std=[];
+    for(const kW of [3,5,6,8,10,12,15,20]){
+      const nn=Math.ceil(kW*1000/wp),B=Math.max(5,Math.ceil(kW/5)*5);
+      const g=finish(base('ongrid',nn,0)),h=finish(base('hybridLi',nn,B));
+      std.push({kW,n:nn,kWp:nn*wp/1000,B,grid:g,hyb:h});
+    }
+    const areaNeeded=n*perPanel;
+    return {tilt:b,Y,yr,ap,perPanel,roofN,sizes,weak,n,kWp:n*wp/1000,limited,overRoof,types,std,curve,
+      sizingKey,Bdef,areaNeeded,idealKw:sizes.ideal*wp/1000,uncappedKw:bestN*wp/1000,cappedByOffset:bestN>nFull,nMax,nMin};
+  }
+
+  let pl=plan(tiltUsed);
+  if(S.roofType!=='sloped'&&S.tiltMode==='auto'&&pl.sizes.ideal>pl.roofN&&tiltUsed>15){
+    const alt=plan(15);
+    if(alt.roofN>pl.roofN){tilt.reduced=true;tilt.before=Math.round(tiltUsed);pl=alt;tiltUsed=15;tiltReason='low-fit';}
+  }
+  tilt.used=Math.round(tiltUsed);tilt.reason=tiltReason;
+  R.tilt=tilt;R.plan=pl;
+  R.sel=S.selType&&pl.types[S.selType]?S.selType:(S.backup==='yes'?'hybridLi':'ongrid');
+  R.selT=pl.types[R.sel]||null;
+
+  /* sun geometry */
+  const lat=L.lat;
+  R.sun={
+    noonDec:90-lat-23.45,noonJun:90-lat+23.45,noonEq:90-lat,
+    solarNoon:12*60+(75-L.lon)*4,
+    am9Dec:sunAlt(lat,355,12-(+S.hoursSun||3)),
+    dec:[5,6,7,8,9,10,11,12,13,14,15,16,17,18,19].map(h=>[h,sunAlt(lat,355,h)]),
+    mar:[5,6,7,8,9,10,11,12,13,14,15,16,17,18,19].map(h=>[h,sunAlt(lat,80,h)]),
+    jun:[4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20].map(h=>[h,sunAlt(lat,172,h)])
+  };
+  R.row=typeof pl.ap==='number'?null:{pitch:pl.ap.pitch,gap:pl.ap.gap};
+
+  /* seasonal adjustment value */
+  const Eused=energy(YT,tilt.used,all,null);
+  const E2=energy(YT,tilt.winter,winter,null)+energy(YT,tilt.summer,summer,null);
+  let Em=0;const monthTilt=[];
+  for(let m=0;m<12;m++){let mx=0,mb=0;for(let b=0;b<=60;b++){if(YT[b][m]>mx+1e-9){mx=YT[b][m];mb=b;}}Em+=mx*DAYS[m];monthTilt.push(mb);}
+  R.monthTilt=monthTilt;
+  R.seasons={fixed:Eused,two:E2,monthly:Em,gain2:(E2/Eused-1)*100,gainM:(Em/Eused-1)*100};
+  R.annualFlat=energy(YT,0,all,null);R.annualBest=energy(YT,tAnnual,all,null);R.annualUsed=Eused;
+
+  /* quote check */
+  const q=+S.quote;
+  if(q>0&&R.selT){const est=R.selT.total,r=q/est;R.quote={q,est,ratio:r,verdict:r<0.82?'low':r>1.18?'high':'fair'};}
+  return R;
+}
+
+/* ================= FORMAT ================= */
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const f0=n=>Math.round(n).toLocaleString('en-US');
+const f1=n=>(Math.round(n*10)/10).toLocaleString('en-US',{minimumFractionDigits:1,maximumFractionDigits:1});
+function grp(n){const s=String(Math.round(Math.abs(n)));if(s.length<=3)return s;return s.slice(0,-3).replace(/\B(?=(\d{2})+(?!\d))/g,',')+','+s.slice(-3);}
+const rsFull=n=>(n<0?'−':'')+'Rs '+grp(n);
+function rs(n){const a=Math.abs(n),s=n<0?'−':'';if(a>=1e7)return s+'Rs '+(a/1e7).toFixed(2)+' crore';if(a>=1e5)return s+'Rs '+(a/1e5).toFixed(2)+' lakh';return s+'Rs '+grp(a);}
+const yrs=v=>v==null?'Over 25 yrs':v<1?'Under 1 yr':f1(v)+' yrs';
+const pct=v=>Math.round(v)+'%';
+const fx=v=>String(Math.round(v*10)/10);
+const UNIT_LABEL={sqft:'sq ft',sqm:'sq m',marla:'marla',kanal:'kanal',sqyd:'sq yd'};
+const sqft=m2=>m2/0.092903;
+function clock(min){const h=Math.floor(min/60),m=Math.round(min%60);return h+':'+String(m).padStart(2,'0');}
+
+/* ================= STATE + STORAGE ================= */
+const KEY='pk-solar-planner-v2';
+function loadState(){
+  const d=defaultState();
+  try{
+    const raw=localStorage.getItem(KEY);
+    if(raw){const o=JSON.parse(raw);if(o&&typeof o==='object'){
+      const s=Object.assign(d,o);
+      s.P=Object.assign({},TIERS.standard,o.P||{});
+      if(!Array.isArray(s.units)||s.units.length!==12)s.units=SAMPLE.slice();
+      return s;}}
+  }catch(e){}
+  return d;
+}
+function saveState(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+let S=loadState(),R=null,hasDl=false,toastTimer=null;
+
+/* ================= CHARTS ================= */
+function niceStep(raw){const e=Math.pow(10,Math.floor(Math.log10(raw)));const f=raw/e;return (f<=1?1:f<=2?2:f<=2.5?2.5:f<=5?5:10)*e;}
+function axisRange(lo,hi,n){
+  if(hi<=lo)hi=lo+1;
+  const st=niceStep((hi-lo)/(n||4));
+  const a=Math.floor(lo/st+1e-9)*st,b=Math.ceil(hi/st-1e-9)*st,ticks=[];
+  for(let v=a;v<=b+st/2;v+=st)ticks.push(+v.toFixed(6));
+  return {lo:a,hi:b,ticks};
+}
+function groupBars(labels,series,o){
+  const W=600,H=o.h||230,pl=o.pl||46,pr=10,pt=16,pb=26,iw=W-pl-pr,ih=H-pt-pb;
+  let mxv=0;series.forEach(se=>se.vals.forEach(v=>{mxv=Math.max(mxv,v);}));
+  const ax=axisRange(0,mxv*1.06,4),y=v=>pt+ih-(v-ax.lo)/(ax.hi-ax.lo)*ih;
+  const fm=o.fmt||f0;
+  let s='<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(o.aria)+'">';
+  ax.ticks.forEach(v=>{s+='<line class="gl" x1="'+pl+'" x2="'+(W-pr)+'" y1="'+y(v).toFixed(1)+'" y2="'+y(v).toFixed(1)+'"/><text class="ax" x="'+(pl-6)+'" y="'+(y(v)+4).toFixed(1)+'" text-anchor="end">'+fm(v)+'</text>';});
+  const gw=iw/labels.length,k=series.length,bw=Math.min(30,gw*0.74/k);
+  labels.forEach((lb,i)=>{
+    const gx=pl+gw*i+gw/2;
+    series.forEach((se,j)=>{
+      const v=se.vals[i],x=gx-k*bw/2+j*bw,cls=se.clsFn?se.clsFn(i):se.cls,h=Math.max(0,(v-ax.lo)/(ax.hi-ax.lo)*ih);
+      s+='<rect class="'+cls+'" x="'+x.toFixed(1)+'" y="'+(pt+ih-h).toFixed(1)+'" width="'+(bw-1).toFixed(1)+'" height="'+h.toFixed(1)+'" rx="1.5"/>';
+      if(o.labelAt&&o.labelAt(i,j))s+='<text class="axb" x="'+(x+bw/2).toFixed(1)+'" y="'+(pt+ih-h-4).toFixed(1)+'" text-anchor="middle">'+fm(v)+'</text>';
+    });
+    s+='<text class="ax" x="'+gx.toFixed(1)+'" y="'+(H-8)+'" text-anchor="middle">'+lb+'</text>';
+  });
+  if(o.hline){const yy=y(o.hline.v).toFixed(1);s+='<line class="zl" x1="'+pl+'" x2="'+(W-pr)+'" y1="'+yy+'" y2="'+yy+'" stroke-dasharray="5 4"/><text class="axb" x="'+(W-pr)+'" y="'+(yy-5)+'" text-anchor="end">'+esc(o.hline.label)+'</text>';}
+  return s+'</svg>';
+}
+function lineChart(o){
+  const W=600,H=o.h||240,pl=o.pl||52,pr=18,pt=16,pb=30,iw=W-pl-pr,ih=H-pt-pb;
+  const xs=o.xs,xmin=xs[0],xmax=xs[xs.length-1];
+  let lo=0,hi=0;o.series.forEach(se=>se.ys.forEach(v=>{lo=Math.min(lo,v);hi=Math.max(hi,v);}));
+  const ax=axisRange(lo,hi*1.05,4),x=v=>pl+(v-xmin)/(xmax-xmin)*iw,y=v=>pt+ih-(v-ax.lo)/(ax.hi-ax.lo)*ih;
+  const fm=o.fmt||(v=>String(v));
+  let s='<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(o.aria)+'">';
+  ax.ticks.forEach(v=>{s+='<line class="gl" x1="'+pl+'" x2="'+(W-pr)+'" y1="'+y(v).toFixed(1)+'" y2="'+y(v).toFixed(1)+'"/><text class="ax" x="'+(pl-6)+'" y="'+(y(v)+4).toFixed(1)+'" text-anchor="end">'+fm(v)+'</text>';});
+  o.xTicks.forEach(t=>{s+='<text class="ax" x="'+x(t.x).toFixed(1)+'" y="'+(H-9)+'" text-anchor="middle">'+t.label+'</text>';});
+  if(ax.lo<0)s+='<line class="zl" x1="'+pl+'" x2="'+(W-pr)+'" y1="'+y(0).toFixed(1)+'" y2="'+y(0).toFixed(1)+'"/>';
+  if(o.fillFirst){
+    const ys=o.series[0].ys;let d='M'+x(xs[0]).toFixed(1)+' '+y(0).toFixed(1);
+    xs.forEach((xv,i)=>{d+=' L'+x(xv).toFixed(1)+' '+y(ys[i]).toFixed(1);});
+    d+=' L'+x(xmax).toFixed(1)+' '+y(0).toFixed(1)+' Z';
+    s+='<path class="a-pos" d="'+d+'"/>';
+  }
+  o.series.forEach(se=>{
+    let d='';xs.forEach((xv,i)=>{d+=(i?' L':'M')+x(xv).toFixed(1)+' '+y(se.ys[i]).toFixed(1);});
+    s+='<path class="'+se.cls+'" d="'+d+'"/>';
+  });
+  (o.vlines||[]).forEach((v,i)=>{
+    const xx=x(v.x).toFixed(1);
+    s+='<line class="zl" x1="'+xx+'" x2="'+xx+'" y1="'+pt+'" y2="'+(pt+ih)+'" stroke-dasharray="3 4"/><text class="axb" x="'+xx+'" y="'+(pt-4+(i%2)*0)+'" text-anchor="middle">'+esc(v.label)+'</text>';
+  });
+  (o.dots||[]).forEach(d=>{s+='<circle class="'+d.cls+'" cx="'+x(d.x).toFixed(1)+'" cy="'+y(d.y).toFixed(1)+'" r="4.5"/>';});
+  return s+'</svg>';
+}
+function sunPathSvg(){
+  const W=560,H=250,pl=40,pr=14,pt=14,pb=30,iw=W-pl-pr,ih=H-pt-pb,x=h=>pl+(h-4)/16*iw,y=a=>pt+ih-a/90*ih;
+  let s='<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Sun height through the day on 21 June, the equinoxes and 21 December">';
+  [0,30,60,90].forEach(a=>{s+='<line class="gl" x1="'+pl+'" x2="'+(W-pr)+'" y1="'+y(a)+'" y2="'+y(a)+'"/><text class="ax" x="'+(pl-6)+'" y="'+(y(a)+4)+'" text-anchor="end">'+a+'°</text>';});
+  s+='<rect class="band" x="'+x(9)+'" y="'+pt+'" width="'+(x(15)-x(9))+'" height="'+ih+'"/>';
+  for(let h=4;h<=20;h+=2){const lb=h===12?'12 noon':(h<12?h+' am':(h-12)+' pm');s+='<text class="ax" x="'+x(h)+'" y="'+(H-9)+'" text-anchor="middle">'+lb+'</text>';}
+  function path(arr,cls){let d='',on=false;arr.forEach(p=>{if(p[1]>=0){d+=(on?' L':'M')+x(p[0]).toFixed(1)+' '+y(p[1]).toFixed(1);on=true;}});return '<path class="'+cls+'" d="'+d+'"/>';}
+  s+=path(R.sun.jun,'l-sun')+path(R.sun.mar,'l-acc')+path(R.sun.dec,'l-mut');
+  return s+'</svg>';
+}
+function tiltSvg(){
+  const b=R.tilt.used,W=420,H=230,gy=196,x0=130,y0=176,L=170,t=rad(b);
+  const x1=x0+L*Math.cos(t),y1=y0-L*Math.sin(t),mx=(x0+x1)/2,my=(y0+y1)/2;
+  const aD=R.sun.noonDec,aJ=R.sun.noonJun;
+  function sunPos(a,d){return [mx-d*Math.cos(rad(a)),my-d*Math.sin(rad(a))];}
+  const sd=sunPos(aD,140),sj=sunPos(aJ,112);
+  let s='<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Side view of a panel tilted '+b+' degrees facing south">';
+  s+='<line class="zl" x1="16" x2="'+(W-16)+'" y1="'+gy+'" y2="'+gy+'"/>';
+  s+='<line class="l-mut" x1="'+x0+'" y1="'+y0+'" x2="'+x0+'" y2="'+gy+'"/><line class="l-mut" x1="'+x1.toFixed(1)+'" y1="'+y1.toFixed(1)+'" x2="'+x1.toFixed(1)+'" y2="'+gy+'"/>';
+  s+='<line class="gl" x1="'+x0+'" y1="'+y0+'" x2="'+(x0+L+10)+'" y2="'+y0+'" stroke-dasharray="4 4"/>';
+  [[sd,'l-mut',aD,'Dec noon '],[sj,'l-sun',aJ,'Jun noon ']].forEach(p=>{
+    s+='<line class="'+p[1]+' l-dash" x1="'+p[0][0].toFixed(1)+'" y1="'+p[0][1].toFixed(1)+'" x2="'+mx.toFixed(1)+'" y2="'+my.toFixed(1)+'" style="stroke-width:1.4"/>';
+    s+='<circle class="d-sun" cx="'+p[0][0].toFixed(1)+'" cy="'+p[0][1].toFixed(1)+'" r="7"'+(p[1]==='l-mut'?' style="opacity:.55"':'')+'/>';
+    s+='<text class="axb" x="'+(p[0][0]+12).toFixed(1)+'" y="'+(p[0][1]+4).toFixed(1)+'">'+p[3]+Math.round(p[2])+'\u00b0</text>';
+  });
+  s+='<line x1="'+x0+'" y1="'+y0+'" x2="'+x1.toFixed(1)+'" y2="'+y1.toFixed(1)+'" stroke="var(--accent)" stroke-width="7" stroke-linecap="round"/>';
+  const ar=54;
+  s+='<path class="l-acc" style="stroke-width:1.6" d="M'+(x0+ar)+' '+y0+' A'+ar+' '+ar+' 0 0 0 '+(x0+ar*Math.cos(t)).toFixed(1)+' '+(y0-ar*Math.sin(t)).toFixed(1)+'"/>';
+  s+='<text class="axb" x="'+(x0+ar+8)+'" y="'+(y0-6)+'">'+b+'° tilt</text>';
+  s+='<text class="ax" x="22" y="'+(gy+16)+'">SOUTH</text><text class="ax" x="'+(W-22)+'" y="'+(gy+16)+'" text-anchor="end">NORTH</text>';
+  return s+'</svg>';
+}
+
+/* ================= SECTIONS ================= */
+const sec=(id,kick,title,inner)=>'<section class="sec" id="'+id+'"><div><div class="kick">'+kick+'</div><h2>'+title+'</h2></div>'+inner+'</section>';
+const stat=(k,v,s,cls)=>'<div class="stat '+(cls||'')+'"><span class="k">'+k+'</span><span class="v">'+v+'</span>'+(s?'<span class="s">'+s+'</span>':'')+'</div>';
+const mapLink=q=>'https://www.google.com/maps/search/'+encodeURIComponent(q);
+const unitStr=m2=>f0(sqft(m2))+' sq ft ('+f0(m2)+' m²)';
+
+function secUsage(){
+  const mo=R.units,pk=R.peak,lw=R.low;
+  const stats='<div class="stats">'+
+    stat('Average a month',f0(R.avg)+' <span style="font-size:.5em;font-weight:600">units</span>','Over 12 months')+
+    stat('Peak month',f0(pk.v)+' <span style="font-size:.5em;font-weight:600">units</span>',MONTHS[pk.i],'peak')+
+    stat('Lowest month',f0(lw.v)+' <span style="font-size:.5em;font-weight:600">units</span>',MONTHS[lw.i],'low')+
+    stat('Bill now, per year',rs(R.billNow),'About Rs '+f1(R.effRate)+' per unit, taxes in')+'</div>';
+  const chart='<figure class="fig" style="margin:0">'+groupBars(MONTHS,[{vals:mo,clsFn:i=>i===pk.i?'b-sun':i===lw.i?'b-good':'b-acc'}],
+    {aria:'Units used in each month',labelAt:(i)=>i===pk.i||i===lw.i,hline:{v:R.avg,label:'average '+f0(R.avg)}})+
+    '<figcaption><span class="legend"><span><i class="ls"></i>Peak month</span><span><i class="lg"></i>Lowest month</span><span><i class="lc"></i>Other months</span></span></figcaption></figure>';
+  const ratio=lw.v>0?pk.v/lw.v:0;
+  let notes='<p class="lead">Your peak month uses '+(ratio?f1(ratio)+' times':'far more than')+' your lowest. Summer (May to September) averages '+f0(R.summerAvg)+' units a month and winter (November to February) '+f0(R.winterAvg)+'.';
+  notes+=R.summerAvg>R.winterAvg*1.6?' That summer jump is air-conditioner load, which is exactly when the sun is strongest.':'';
+  notes+='</p>';
+  let extra='';
+  if(S.category==='domestic')extra+='<p class="note">Every unit on a domestic bill is charged at the rate of the slab the month lands in. Cutting the units you buy from the grid can drop you into a cheaper slab, which lowers the rate on all the units you still use. The savings below include that effect.</p>';
+  if(R.avg<150)extra+='<p class="note warn">Your use is low, so bills are small and a system takes longer to repay. Check the payback figure before you buy.</p>';
+  return sec('sUsage','Your consumption','Average, peak and lowest use',stats+chart+notes+extra);
+}
+
+function secSize(){
+  const pl=R.plan,t=R.selT;
+  if(!t){return sec('sSize','Ideal system','Ideal system size','<p class="note bad">Your usable roof area is too small for even one panel at this tilt. Raise the roof area or the free-space share in step 2, or choose a sloped roof or open ground.</p>');}
+  const cover=t.sim.gen/R.total*100;
+  const areaTxt=unitStr(pl.areaNeeded);
+  const labelOf={daytime:'Daytime match',ideal:'Best value',offset:'Cover all yearly units',roof:'Fill the roof'};
+  const descOf={daytime:'Covers what you use while the sun is up',ideal:'Each extra panel repays within '+fx(S.T)+' years',offset:'Makes about what you use in a year',roof:'The most your roof can hold'};
+  const hasOv=+S.sizeOv>0;
+  const opts='<div class="opts" role="group" aria-label="Choose a system size">'+['daytime','ideal','offset','roof'].map(k=>{
+    const want=pl.sizes[k],n=Math.min(want,pl.roofN),kwp=n*R.wp/1000,cut=want>pl.roofN&&k!=='roof';
+    return '<button type="button" class="opt" data-size="'+k+'" aria-pressed="'+(!hasOv&&S.sizeKey===k)+'"><span class="t">'+labelOf[k]+'</span><span class="n">'+(n>0?f1(kwp)+' kWp':'No room')+'</span><span class="d">'+(n>0?n+' panels. ':'')+(cut?'Roof is the limit here.':descOf[k])+'</span></button>';
+  }).join('')+'</div>';
+  const plate='<div class="plate"><div><div class="tag">'+(hasOv?'Your fixed size':S.sizeKey==='ideal'?'Recommended system':labelOf[S.sizeKey])+'</div><div class="read">'+(Math.round(pl.kWp*100)/100).toFixed(2)+'<small>kWp</small></div></div>'+
+    '<dl><div><dt>Panels</dt><dd>'+pl.n+' × '+R.wp+' W</dd></div><div><dt>Inverter</dt><dd>'+t.cost.invKw+' kW</dd></div><div><dt>Output a year</dt><dd>'+f0(t.sim.gen)+' kWh</dd></div><div><dt>Covers</dt><dd>'+pct(cover)+' of your units</dd></div><div><dt>Roof space</dt><dd>'+areaTxt+'</dd></div></dl></div>';
+  let lead='<p class="lead">This size is sized from your '+f0(R.total)+' units a year and the sun in '+esc(R.loc.city)+', which gives about '+f0(pl.yr)+' kWh per kW per year at a '+R.tilt.used+'° tilt.';
+  if(!hasOv&&S.sizeKey==='ideal')lead+=' Panels are added only while each extra one pays for itself within '+fx(S.T)+' years, and not beyond about what you use in a year, because exports earn just Rs '+fx(S.buyback)+' a unit.';
+  lead+='</p>';
+  let notes='';
+  if(!hasOv&&S.sizeKey==='ideal'&&pl.cappedByOffset)notes+='<p class="note">Without the cap at your yearly use, the payback test alone would allow '+f1(pl.uncappedKw)+' kWp. The extra panels would mostly export at Rs '+fx(S.buyback)+', a rate NEPRA may cut again, so they are left out.</p>';
+  if(pl.limited||pl.overRoof)notes+='<p class="note warn">Your roof fits '+pl.roofN+' panels ('+f1(pl.roofN*R.wp/1000)+' kWp) at this tilt. '+(pl.overRoof?'The size above needs more space than you have. ':'This is the roof limit, below the best-value size of '+f1(pl.sizes.ideal*R.wp/1000)+' kWp. ')+'Options: flush-mount on a sloped roof, use a lower tilt, add a ground array, or choose a higher-wattage panel.</p>';
+  if(R.tilt.reduced)notes+='<p class="note">To fit more panels the tilt was lowered from '+R.tilt.before+'° to 15°. That costs a few percent of yearly energy but fits '+(pl.roofN)+' panels.</p>';
+  if(pl.weak)notes+='<p class="note warn">At your usage, no system size repays itself within '+fx(S.T)+' years on these prices. Look at the payback figure below before deciding.</p>';
+  let curve='';
+  if(S.mode==='installer'&&pl.curve.length>2){
+    const xs=pl.curve.map(c=>+c.kWp.toFixed(2));
+    const mk=[['daytime','Day'],['ideal','Best'],['offset','Year']].map(a=>({x:pl.sizes[a[0]]*R.wp/1000,label:a[1]}));
+    curve='<figure class="fig" style="margin:0">'+lineChart({aria:'Yearly saving against yearly cost of the system, by size',xs:xs,fmt:v=>f1(v),
+      series:[{ys:pl.curve.map(c=>c.saving/1e5),cls:'l-acc'},{ys:pl.curve.map(c=>c.costT/1e5),cls:'l-sun'}],
+      xTicks:xs.filter((v,i)=>i%Math.ceil(xs.length/8)===0).map(v=>({x:v,label:f1(v)})),vlines:mk})+
+      '<figcaption><span class="legend"><span><i class="lc"></i>Saving per year (Rs lakh)</span><span><i class="ls"></i>System cost ÷ '+fx(S.T)+' years (Rs lakh)</span></span> The best size is where the blue line is furthest above the amber one. Horizontal axis: system size in kWp. Sized for '+TYPES[pl.sizingKey].label.toLowerCase()+'.</figcaption></figure>';
+  }
+  return sec('sSize','Ideal system','Ideal system size',plate+lead+opts+notes+curve);
+}
+
+function secCompare(){
+  const pl=R.plan,tp=pl.types;if(!tp.ongrid)return '';
+  const keys=['ongrid','hybridLi','hybridPb','offgrid'];
+  const recKey=S.backup==='yes'?'hybridLi':'ongrid';
+  const head='<tr><th scope="col"></th>'+keys.map(k=>'<th scope="col" class="'+(R.sel===k?'sel':'')+'"><button type="button" class="pick" data-type="'+k+'" aria-pressed="'+(R.sel===k)+'">'+TYPES[k].label+'</button>'+(k===recKey?'<span class="rec">Fits your answers</span>':'')+'</th>').join('')+'</tr>';
+  const rows=[
+    ['System size',t=>f1(t.kWp)+' kWp<br><span class="hint">'+t.n+' panels</span>'],
+    ['Inverter',t=>t.cost.invKw+' kW'],
+    ['Battery',t=>t.key==='ongrid'?'None':f1(t.battKwh)+' kWh<br><span class="hint">'+f1(t.usable)+' kWh usable</span>'],
+    ['Upfront cost',t=>'<b>'+rs(t.total)+'</b>'],
+    ['Works in an outage',t=>t.key==='ongrid'?'<span class="tag-bad">No, shuts off</span>':t.key==='offgrid'?'<span class="tag-good">Always, no grid used</span>':'<span class="tag-good">About '+f1(t.backupHrs)+' h</span><br><span class="hint">at '+f1(+S.loadKw)+' kW</span>'],
+    ['Output a year',t=>f0(t.sim.gen)+' kWh'],
+    ['Bill saving a year',t=>rs(t.sim.saving)],
+    ['Average bill after',t=>t.key==='offgrid'?'None':rs(t.billAfterAvg)+' a month'],
+    ['Payback',t=>yrs(t.payback)],
+    ['25-year net gain',t=>rs(t.net25)+'<br><span class="hint">after replacements</span>'],
+    ['Battery life',t=>t.key==='ongrid'?'—':t.key==='hybridPb'?'About 4 years':'12 to 15 years'],
+    ['Best for',t=>({ongrid:'Reliable grid, lowest cost',hybridLi:'Frequent outages, long life',hybridPb:'Tight budget today',offgrid:'Places with no grid'})[t.key]]
+  ];
+  const body=rows.map(r=>'<tr><th scope="row">'+r[0]+'</th>'+keys.map(k=>'<td class="'+(R.sel===k?'sel':'')+'">'+r[1](tp[k])+'</td>').join('')+'</tr>').join('');
+  const main='<div class="tblwrap"><table class="tbl-min"><thead>'+head+'</thead><tbody>'+body+'</tbody></table></div>';
+  const offNote='<p class="cap">The off-grid column is sized on its own ('+f1(tp.offgrid.kWp)+' kWp with '+f1(tp.offgrid.battKwh)+' kWh of battery) so it can carry your worst month with no grid. Costs include the margin and the mid-life inverter and battery replacements shown in the 25-year figure.</p>';
+  const std=pl.std.map(r=>'<tr><th scope="row">'+r.kW+' kW<br><span class="hint">'+r.n+' panels</span></th><td>'+rs(r.grid.total)+'</td><td>'+rs(r.hyb.total)+'<br><span class="hint">with '+r.B+' kWh lithium</span></td><td>'+rs(r.grid.total/r.kWp)+' / kWp</td><td>'+yrs(r.grid.payback)+'</td></tr>').join('');
+  const stdT='<div class="tblwrap"><table class="tbl-min"><thead><tr><th scope="col">Standard size</th><th scope="col">On-grid</th><th scope="col">Hybrid + lithium</th><th scope="col">On-grid cost per kWp</th><th scope="col">On-grid payback for you</th></tr></thead><tbody>'+std+'</tbody></table></div>';
+  const pub='<details class="fold"><summary>Published system quotes found online (2026)</summary><div class="body"><div class="tblwrap"><table class="tbl-min"><thead><tr><th scope="col">System</th><th scope="col">Range quoted</th><th scope="col">Source</th></tr></thead><tbody>'+
+    '<tr><td>3 kW on-grid</td><td>Rs 5.5 to 7.5 lakh</td><td><a href="https://www.voltflow.net/blog/solar-panels-pakistan-2026" target="_blank" rel="noopener">VoltFlow, Apr 2026</a></td></tr>'+
+    '<tr><td>5 kW on-grid</td><td>Rs 5 to 7 lakh<br>Rs 8 to 9 lakh<br>Rs 8.5 to 12 lakh</td><td><a href="https://beta.maxpower.com.pk/?p=1880" target="_blank" rel="noopener">Max Power, Jun 2026</a><br><a href="https://www.toolsfluent.com/blog/on-grid-vs-hybrid-solar-pakistan-2026" target="_blank" rel="noopener">ToolsFluent, Jul 2026</a><br><a href="https://www.voltflow.net/blog/solar-panels-pakistan-2026" target="_blank" rel="noopener">VoltFlow, Apr 2026</a></td></tr>'+
+    '<tr><td>5 kW hybrid</td><td>Rs 9 to 13 lakh<br>Rs 15 to 17 lakh</td><td><a href="https://beta.maxpower.com.pk/?p=1880" target="_blank" rel="noopener">Max Power</a><br><a href="https://www.toolsfluent.com/blog/on-grid-vs-hybrid-solar-pakistan-2026" target="_blank" rel="noopener">ToolsFluent</a></td></tr>'+
+    '<tr><td>10 kW on-grid</td><td>Rs 9.5 to 12 lakh<br>Rs 15 to 22 lakh</td><td><a href="https://www.toolsfluent.com/blog/10kw-solar-system-pakistan-complete-guide" target="_blank" rel="noopener">ToolsFluent</a><br><a href="https://www.voltflow.net/blog/solar-panels-pakistan-2026" target="_blank" rel="noopener">VoltFlow</a></td></tr>'+
+    '<tr><td>10 kW hybrid, 10 kWh lithium</td><td>Rs 14 to 16 lakh</td><td><a href="https://www.toolsfluent.com/blog/10kw-solar-system-pakistan-complete-guide" target="_blank" rel="noopener">ToolsFluent</a></td></tr>'+
+    '</tbody></table></div><p class="cap">Published quotes disagree by up to double for the same size. Ask each installer for an itemised list with panel brand and watts, inverter model, battery model and what the DISCO paperwork covers.</p></div></details>';
+  return sec('sCompare','Compare systems','Every system type, side by side',main+offNote+'<h3>Prices by standard size</h3>'+stdT+pub);
+}
+
+function secMoney(){
+  const t=R.selT;if(!t)return '';
+  const years=[];for(let i=0;i<=25;i++)years.push(i);
+  const stats='<div class="stats">'+
+    stat('Upfront cost',rs(t.total),TYPES[t.key].label+', '+f1(t.kWp)+' kWp')+
+    stat('Saving in year one',rs(t.sim.saving),rs(t.sim.selfSave)+' from bill cuts, '+rs(t.sim.expInc)+' from exports')+
+    stat('Payback',yrs(t.payback),'If exports earned nothing: '+yrs(t.payback0))+
+    stat('25-year net gain',rs(t.net25),'After inverter and battery replacements')+'</div>';
+  const cf='<figure class="fig" style="margin:0">'+lineChart({aria:'Cumulative cash position over 25 years',xs:years,fmt:v=>f1(v),fillFirst:false,
+    series:[{ys:t.cf.map(v=>v/1e5),cls:'l-acc'}],xTicks:[0,5,10,15,20,25].map(v=>({x:v,label:v+' yr'})),
+    vlines:t.payback!=null&&t.payback<=25?[{x:t.payback,label:'Payback '+f1(t.payback)+' yrs'}]:[]})+
+    '<figcaption>Money in hand over the years, in Rs lakh, after paying for the system. Tariffs are assumed to rise '+fx(S.esc)+'% a year and panels to lose '+fx(S.deg)+'% a year.</figcaption></figure>';
+  const gm=t.sim.mo.map(m=>m.gen);
+  const gc='<figure class="fig" style="margin:0">'+groupBars(MONTHS,[{vals:R.units,cls:'b-acc'},{vals:gm,cls:'b-sun'}],{aria:'Units used and solar units made in each month'})+
+    '<figcaption><span class="legend"><span><i class="lc"></i>Units you use</span><span><i class="ls"></i>Units the system makes</span></span> Months where the amber bar is taller export the extra at Rs '+fx(S.buyback)+' a unit.</figcaption></figure>';
+  let quote='';
+  if(R.quote&&S.mode==='individual'){
+    const q=R.quote,v=q.verdict;
+    quote='<p class="note '+(v==='fair'?'good':'warn')+'"><b>Your quote of '+rsFull(q.q)+' vs this planner\'s estimate of '+rsFull(q.est)+' for '+TYPES[t.key].label.toLowerCase()+'.</b> '+
+      (v==='fair'?'That is in line with the market. Still ask for an itemised list.':v==='high'?'The quote is '+Math.round((q.ratio-1)*100)+'% above the estimate. Ask what brands, inverter and battery are included, and compare at least two more quotes.':'The quote is '+Math.round((1-q.ratio)*100)+'% below the estimate. Check the panel brand and watts, the inverter and battery models, warranty, and whether DISCO paperwork is included.')+'</p>';
+  }
+  const risk='<p class="note warn"><b>Export credit risk.</b> Under the NEPRA Prosumer Regulations 2026 exports are credited at about Rs '+fx(S.buyback)+' a unit on 5-year agreements. <a href="https://dailytimes.com.pk/tag/buyback-rates/" target="_blank" rel="noopener">Daily Times reported in July 2026</a> that NEPRA is looking at cutting this further. The system above is sized so that most of the saving comes from units you use yourself.</p>';
+  return sec('sMoney','Money','What '+TYPES[t.key].label.toLowerCase()+' costs and saves',stats+quote+'<div class="two">'+cf+gc+'</div>'+risk);
+}
+
+function secRoof(){
+  const pl=R.plan;if(!R.selT)return '';
+  const usage=R.usableM2>0?pl.areaNeeded/R.usableM2:9;
+  const over=usage>1.0001;
+  const meter='<div class="meter'+(over?' over':'')+'" role="img" aria-label="Share of usable roof taken by the system"><i style="width:'+Math.min(100,usage*100).toFixed(0)+'%"></i></div>';
+  const kv='<dl class="kv">'+
+    '<div><dt>Roof area entered</dt><dd>'+f0(+S.areaVal||0)+' '+UNIT_LABEL[S.areaUnit]+'</dd></div>'+
+    '<div><dt>Free for panels ('+S.usablePct+'%)</dt><dd>'+unitStr(R.usableM2)+'</dd></div>'+
+    '<div><dt>Space per panel</dt><dd>'+f1(pl.perPanel)+' m²</dd></div>'+
+    '<div><dt>Space this system needs</dt><dd>'+unitStr(pl.areaNeeded)+'</dd></div>'+
+    '<div><dt>Panels that fit</dt><dd>'+pl.roofN+' ('+f1(pl.roofN*R.wp/1000)+' kWp)</dd></div>'+
+    '<div><dt>Share of free space used</dt><dd>'+pct(Math.min(usage,9.99)*100)+'</dd></div></dl>';
+  let tips='';
+  if(S.roofType==='flat'||S.roofType==='ground')tips='<p class="note">Tilted frames on a flat roof need about '+f1(pl.perPanel)+' m² per panel, because each row needs a gap so it does not shade the one behind it at 9 am and 3 pm in December. Panels laid flush on a sloped roof need only about '+f1(R.panel.l*R.panel.w*1.1)+' m² each.</p>';
+  else tips='<p class="note">Flush-mounted panels follow the roof plane, so they take about '+f1(pl.perPanel)+' m² each. Check that the roof faces within about 45° of south, or output drops noticeably.</p>';
+  if(over)tips+='<p class="note bad">The system needs more space than the roof has. Reduce the size, or free more of the roof.</p>';
+  return sec('sRoof','Roof area','Does it fit on the roof?',meter+kv+tips);
+}
+
+function secSun(){
+  if(!R.selT&&!R.tilt)return '';
+  const T=R.tilt,L=R.loc,sn=R.sun,pl=R.plan;
+  const face=S.azDev>0?'South, turned '+S.azDev+'°':'True south';
+  const stats='<div class="stats">'+
+    stat('Tilt to use',T.used+'°',T.reason==='roof'?'Matches the roof slope':T.reduced?'Lowered to fit more panels':'Best for your usage')+
+    stat('Facing',face,'180° on a true compass')+
+    stat('Best all-year tilt',T.annual+'°','Fixed, ignoring your bills')+
+    stat('Winter / summer tilt',T.winter+'° / '+T.summer+'°','If you re-angle twice a year')+'</div>';
+  let why='';
+  if(T.reason==='best'&&!T.reduced){
+    if(T.weighted<T.annual)why=' Your usage peaks in '+MONTHS[R.peak.i]+', so the best fixed tilt is lower than the all-year best ('+T.weighted+'\u00b0 against '+T.annual+'\u00b0). It favours the high-sun months when your bills are largest.';
+    else if(T.weighted>T.annual)why=' Your usage peaks in '+MONTHS[R.peak.i]+', so the best fixed tilt is steeper than the all-year best ('+T.weighted+'\u00b0 against '+T.annual+'\u00b0). It favours the low-sun months when your bills are largest.';
+    else why=' The best fixed tilt for your usage matches the all-year best.';
+  }
+  const loc='<p class="lead">'+esc(L.city)+' sits at '+L.lat.toFixed(2)+'\u00b0N, '+L.lon.toFixed(2)+'\u00b0E and gets about '+f1(R.lm.GHI.reduce((s,g,m)=>s+g*DAYS[m],0)/365)+' kWh per m\u00b2 of sun on a flat surface each day. Panels here should face true south.'+why+'</p>';
+  const d1='<figure class="fig" style="margin:0">'+tiltSvg()+'<figcaption>Side view from the east. The panel leans toward the south. At noon the sun is '+sn.noonDec.toFixed(0)+'° high on 21 December and '+sn.noonJun.toFixed(0)+'° on 21 June.</figcaption></figure>';
+  const d2='<figure class="fig" style="margin:0">'+sunPathSvg()+'<figcaption><span class="legend"><span><i class="ls"></i>21 June</span><span><i class="lc"></i>21 March and September</span><span><i class="lm"></i>21 December</span></span> Sun height through the day. The shaded band, 9 am to 3 pm, makes most of the energy and should stay free of shade.</figcaption></figure>';
+  const Y=pl.Y;
+  const yc='<figure class="fig" style="margin:0">'+groupBars(MONTHS,[{vals:Y,cls:'b-sun'}],{aria:'Energy made per kW of panels each day, by month',fmt:v=>f1(v),h:200,pl:40})+'<figcaption>kWh made per kW of panels per day, by month, at '+T.used+'° after dust, wiring and heat losses.</figcaption></figure>';
+  const sea='<div class="tblwrap"><table><thead><tr><th scope="col">Way of mounting</th><th scope="col">Angles</th><th scope="col" class="r">Yearly energy</th></tr></thead><tbody>'+
+    '<tr><th scope="row">Fixed</th><td>'+T.used+'° all year</td><td class="r">Baseline</td></tr>'+
+    '<tr><th scope="row">Two settings a year</th><td>'+T.winter+'° Oct to Mar, '+T.summer+'° Apr to Sep</td><td class="r">'+(R.seasons.gain2>=0?'+':'')+f1(R.seasons.gain2)+'%</td></tr>'+
+    '<tr><th scope="row">Changed every month</th><td>'+R.monthTilt.map(b=>b+'°').join(' ')+'</td><td class="r">'+(R.seasons.gainM>=0?'+':'')+f1(R.seasons.gainM)+'%</td></tr></tbody></table></div>'+
+    '<p class="cap">Months run January to December. Re-angling is only worth the climb on easy-access ground frames; most roofs are better left fixed.</p>';
+  const nm=Math.round(sn.solarNoon);
+  const tips='<ul class="list">'+
+    '<li><b>Face true south, not magnetic south.</b> Magnetic north in Pakistan sits about 1 to 3\u00b0 east of true north, so on a compass app aim for roughly 177\u00b0 to 179\u00b0. The surest method: at solar noon, about '+clock(nm)+' PKT here, a vertical stick\'s shadow points due north. Aim the panels the opposite way.</li>'+
+    '<li><b>Keep the tilt at 10° or more</b> so rain and dew wash dust off. In dusty cities plan to clean every 2 to 3 weeks; dirt can cost 5 to 15% of output.</li>'+
+    (pl.ap&&typeof pl.ap==='object'?'<li><b>Row spacing for tilted frames:</b> '+f1(pl.ap.pitch)+' m from the front edge of one row to the front edge of the next, which leaves a '+f1(pl.ap.gap)+' m shadow-free gap. That keeps rows unshaded from '+clock((12-(+S.hoursSun||3))*60)+' to '+clock((12+(+S.hoursSun||3))*60)+' solar time in December.</li>':'')+
+    '<li><b>Avoid shade</b> from water tanks, parapets, stair covers and neighbouring buildings between 9 am and 3 pm. One shaded panel in a string pulls the whole string down unless the inverter has several trackers or the panels have optimisers.</li></ul>';
+  return sec('sSun','Sun and panel angle','Panel angle and sun path for '+esc(L.city),stats+loc+'<div class="two">'+d1+d2+'</div>'+yc+sea+tips);
+}
+
+function secNearby(){
+  const L=R.loc,city=L.custom?'near '+L.lat.toFixed(3)+','+L.lon.toFixed(3):L.city;
+  const inst=S.mode==='installer';
+  const qs=inst?[['Panel distributors','solar panel distributor '+city],['Inverter dealers','solar inverter dealer '+city],['Lithium battery dealers','lithium battery solar dealer '+city],['Structure fabricators','solar mounting structure fabrication '+city]]
+    :[['Solar installers','solar installer '+city],['Solar panel shops','solar panel shop '+city],['Hybrid inverter and battery dealers','hybrid inverter lithium battery dealer '+city]];
+  const links='<div class="links">'+qs.map(q=>'<a href="'+mapLink(q[1])+'" target="_blank" rel="noopener">'+q[0]+' on the map</a>').join('')+'</div>';
+  const disco='<p class="lead">Your electricity utility is most likely <b>'+esc(L.disco)+'</b>. Net billing applications go through it, so confirm the name on your bill before you sign anything.</p>';
+  const col=(L.ref.id==='rawalpindi'||L.ref.id==='islamabad')?'<li>College Road in Rawalpindi is known for solar and UPS battery shops, according to a 2026 market guide.</li>':'';
+  const names='<p class="cap">Companies that 2026 market guides list as distributors or installers: Premier Energy, Reon Energy, Inverex Solar, Alpha Solar, Solar Citizen, Beyond Green, Solar Pakistan and Max Power. This is a list of names that appear in those guides, not a recommendation. Check that each works in your city.</p>';
+  const check='<h3>Before you pay anyone</h3><ul class="list">'+col+
+    '<li>Ask for an itemised quote that names the panel brand and watts, the inverter and battery models, the structure material and the cable sizes.</li>'+
+    '<li>Ask for a site visit that checks shade, roof strength and where the cables will run. A quote given only over the phone is a guess.</li>'+
+    '<li>Confirm the price includes the bidirectional meter and the DISCO net-billing paperwork, and who handles it.</li>'+
+    '<li>Check warranties in writing: panel performance (usually 25 to 30 years), inverter (about 5 years) and battery (cycles and years).</li>'+
+    '<li>Ask whether the installer holds an AEDB licence or certificate and for two recent installations you can visit.</li>'+
+    '<li>Keep advance payments to a part of the price and pay the balance on commissioning.</li></ul>';
+  return sec('sNear',inst?'Suppliers':'Installers',inst?'Suppliers near '+esc(L.city):'Installers near '+esc(L.city),disco+links+names+check);
+}
+
+function secBoq(){
+  const t=R.selT;if(!t)return '';
+  const rows=t.cost.lines.map(l=>'<tr><td>'+esc(l.label)+'</td><td>'+esc(l.qty)+'</td><td class="r">'+grp(l.amount)+'</td></tr>').join('');
+  const tbl='<div class="tblwrap"><table><thead><tr><th scope="col">Item</th><th scope="col">Quantity</th><th scope="col" class="r">Amount (Rs)</th></tr></thead><tbody>'+rows+
+    '<tr><td><b>Total, '+TYPES[t.key].label.toLowerCase()+'</b></td><td>'+f1(t.kWp)+' kWp</td><td class="r"><b>'+grp(t.total)+'</b></td></tr></tbody></table></div>';
+  const meta='<dl class="kv"><div><dt>Customer</dt><dd>'+(esc(S.client)||'Not entered')+'</dd></div><div><dt>Site</dt><dd>'+(esc(S.site)||'Not entered')+'</dd></div><div><dt>Quote reference</dt><dd>'+(esc(S.qref)||'Not entered')+'</dd></div><div><dt>Price per kWp</dt><dd>'+rsFull(t.total/t.kWp)+'</dd></div></dl>';
+  const btns='<div class="row"><button type="button" class="btn primary" data-act="copy">Copy summary</button>'+(hasDl?'<button type="button" class="btn" data-act="quote">Save quote (.html)</button><button type="button" class="btn" data-act="csv">Save list (.csv)</button>':'')+'</div>';
+  return sec('sBoq','Quote','Bill of quantities',meta+tbl+btns+'<p class="cap">Pick a different system in the comparison table above to quote it instead.</p>');
+}
+
+function secBoard(){
+  const link=(t,u)=>'<a href="'+u+'" target="_blank" rel="noopener">'+t+'</a>';
+  const rows=[
+    ['Solar panels, Tier-1 585 to 720 W','About Rs 45 per watt in Karachi after the June budget, down from about Rs 50. Brand and grade ranges run Rs 40 to 55 per watt.',link('ARY News, 1 Jul 2026','https://arynews.tv/solar-panel-batteries-and-inverters-prices-drop-in-karachi')+'; '+link('Max Power, 22 Jul 2026','https://maxpower.com.pk/?p=4875')],
+    ['Lithium battery, 5 kWh','About Rs 230,000, down from Rs 250,000. Most 5 kWh units cost Rs 195,000 to 350,000. A Knox 10.5 kWh unit is Rs 435,000 to 455,000.',link('The Pakistan Connect, 20 Sep 2026','https://thepakistanconnect.com/?p=133802')+'; '+link('W11Stop, 18 Sep 2026','https://w11stop.com/knox-batteries/knox-powerbase-10-10-5kwh-ip20-lithium-battery-51-2v-205ah')],
+    ['Inverters','Solis 10 kW on-grid Rs 181,500 to 200,000. Huawei 5 kW on-grid Rs 350,000. 3 to 5 kW inverters Rs 120,000 to 300,000 by brand.',link('W11Stop, Jul 2026','https://w11stop.com/solis-10kw-on-grid-inverter')+'; '+link('TechJuice','https://www.techjuice.pk/?p=241654')],
+    ['Sales tax on solar','Panels stay at 10% GST. The 2026-27 budget added no new tax on panels, batteries or inverters.',link('Bloom Pakistan','https://bloompakistan.com/?p=155112')+'; '+link('Pakistan Observer','https://pakobserver.net/budget-2026-27-solar-panel-prices-may-not-go-up-as-imf-eases-condition/')],
+    ['Export credit','Rs 11 per unit, on 5-year agreements, under the NEPRA Prosumer Regulations 2026 (9 Feb 2026). Reported to be under review for further cuts.',link('Nukta','https://nukta.com/pakistan-solar-ends-net-metering')+'; '+link('ToolsFluent','https://www.toolsfluent.com/blog/net-metering-pakistan-complete-guide')+'; '+link('Daily Times, Jul 2026','https://dailytimes.com.pk/tag/buyback-rates/')],
+    ['Home electricity tariff','Unprotected slabs from Rs 22.44 a unit (up to 100 units) to Rs 47.69 (over 700 units), plus surcharges and 18% GST. A 300-unit bill is about Rs 13,072.',link('Pakistan Observer','https://pakobserver.net/pakistan-electricity-tariff-slabs-for-2026-remain-unchanged-category-wise-unit-rates/')+'; '+link('ToolsFluent','https://www.toolsfluent.com/blog/electricity-bill-per-units-pakistan-2026')]
+  ];
+  const tbl='<div class="tblwrap"><table class="tbl-min"><thead><tr><th scope="col">Item</th><th scope="col">What was found</th><th scope="col">Source</th></tr></thead><tbody>'+rows.map(r=>'<tr><th scope="row">'+r[0]+'</th><td>'+r[1]+'</td><td>'+r[2]+'</td></tr>').join('')+'</tbody></table></div>';
+  const ass='<ul class="list">'+
+    '<li>Solar output is modelled for '+esc(R.loc.city)+' from monthly sun data, the tilt above, '+S.loss+'% system losses, '+S.shade+'% shading and heat losses by month. Treat it as accurate to about 10%.</li>'+
+    (S.category==='domestic'?'<li>Bills follow the NEPRA domestic slabs for unprotected consumers (every unit billed at the slab reached), plus the Rs 3.23 surcharge, Rs '+fx(S.fpa)+' fuel and quarterly adjustment, 1.5% duty, 18% GST and the Rs 35 TV fee. Fixed charges are left out because solar does not change them.</li>':'<li>Bills use your flat rate of Rs '+fx(S.flatRate)+' a unit.</li>')+
+    '<li>'+S.dayShare+'% of your power is assumed to be used in daylight. Units the panels make beyond that are exported at Rs '+fx(S.buyback)+', and credit is assumed to carry forward.</li>'+
+    '<li>Inverters are replaced in year 12. Lithium batteries are replaced in year 13 at 60% of today\'s price and lead-acid every 4 years.</li>'+
+    '<li>Not included: loan interest, tax on savings, roof strengthening and any net-billing licence fees beyond the paperwork line.</li></ul>';
+  return '<section class="sec" id="sBoard"><details class="fold"'+(S.mode==='installer'?' open':'')+'><summary>Prices, rules and assumptions behind these numbers</summary><div class="body"><p class="cap">Gathered by web search on 9 Oct 2026. The page cannot browse live, so edit any price you have a newer quote for.</p>'+tbl+ass+'</div></details></section>';
+}
+
+/* ================= REPORTS ================= */
+function summaryText(){
+  const t=R.selT,pl=R.plan;if(!t)return '';
+  return ['Pakistan Solar Planner, '+new Date().toISOString().slice(0,10),
+    (S.client?'Customer: '+S.client:''),(S.site?'Site: '+S.site:''),(S.qref?'Quote ref: '+S.qref:''),
+    'Location: '+R.loc.city+' ('+R.loc.lat.toFixed(2)+'N, '+R.loc.lon.toFixed(2)+'E)',
+    'Use: '+f0(R.total)+' units a year, average '+f0(R.avg)+', peak '+f0(R.peak.v)+' ('+MONTHS[R.peak.i]+'), lowest '+f0(R.low.v)+' ('+MONTHS[R.low.i]+')',
+    'System: '+TYPES[t.key].label+', '+f1(t.kWp)+' kWp ('+t.n+' x '+R.wp+' W), inverter '+t.cost.invKw+' kW'+(t.battKwh>0?', battery '+f1(t.battKwh)+' kWh':''),
+    'Panel angle: '+R.tilt.used+' degrees, facing true south',
+    'Price: '+rsFull(t.total),'Saving in year 1: '+rsFull(t.sim.saving),'Payback: '+yrs(t.payback),'Roof space needed: '+unitStr(pl.areaNeeded)].filter(Boolean).join('\n');
+}
+function csvText(){
+  const t=R.selT;if(!t)return '';
+  const q=v=>'"'+String(v).replace(/"/g,'""')+'"';
+  const rows=[['Item','Quantity','Amount (Rs)']].concat(t.cost.lines.map(l=>[l.label,l.qty,Math.round(l.amount)]),[['Total','',Math.round(t.total)]]);
+  return rows.map(r=>r.map(q).join(',')).join('\r\n');
+}
+function reportHtml(){
+  const t=R.selT,pl=R.plan;
+  const css='body{font:15px/1.5 Arial,sans-serif;color:#0f1e2b;max-width:780px;margin:24px auto;padding:0 16px}h1{font-size:24px;margin:0 0 4px}h2{font-size:17px;margin:22px 0 6px;border-bottom:1px solid #cfd9e3;padding-bottom:4px}table{border-collapse:collapse;width:100%}td,th{padding:6px 8px;border-bottom:1px solid #e3e9ef;text-align:left;vertical-align:top}td.r,th.r{text-align:right}.m{color:#52667a;font-size:13px}';
+  const kv=(a,b)=>'<tr><th>'+a+'</th><td>'+b+'</td></tr>';
+  let h='<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Solar quote</title><style>'+css+'</style></head><body>';
+  h+='<h1>'+(S.mode==='installer'?'Solar system quote':'My solar plan')+'</h1><p class="m">Prepared '+new Date().toDateString()+' with Pakistan Solar Planner</p>';
+  if(S.mode==='installer')h+='<table>'+kv('Customer',esc(S.client)||'-')+kv('Site',esc(S.site)||'-')+kv('Quote reference',esc(S.qref)||'-')+'</table>';
+  h+='<h2>Electricity use</h2><table>'+kv('Units a year',f0(R.total))+kv('Average a month',f0(R.avg))+kv('Peak month',f0(R.peak.v)+' ('+MONTHS[R.peak.i]+')')+kv('Lowest month',f0(R.low.v)+' ('+MONTHS[R.low.i]+')')+kv('Bill now, per year',rsFull(R.billNow))+'</table>';
+  h+='<h2>System</h2><table>'+kv('Type',TYPES[t.key].label)+kv('Size',f1(t.kWp)+' kWp, '+t.n+' x '+R.wp+' W')+kv('Inverter',t.cost.invKw+' kW')+(t.battKwh>0?kv('Battery',f1(t.battKwh)+' kWh'):'')+kv('Yearly output',f0(t.sim.gen)+' kWh')+kv('Panel angle',R.tilt.used+' degrees, facing true south')+kv('Roof space needed',unitStr(pl.areaNeeded))+'</table>';
+  h+='<h2>Price and saving</h2><table>'+kv('Price',rsFull(t.total))+kv('Saving in year one',rsFull(t.sim.saving))+kv('Payback',yrs(t.payback))+kv('25-year net gain',rsFull(t.net25))+'</table>';
+  h+='<h2>Bill of quantities</h2><table><tr><th>Item</th><th>Quantity</th><th class="r">Amount (Rs)</th></tr>'+t.cost.lines.map(l=>'<tr><td>'+esc(l.label)+'</td><td>'+esc(l.qty)+'</td><td class="r">'+grp(l.amount)+'</td></tr>').join('')+'<tr><td><b>Total</b></td><td></td><td class="r"><b>'+grp(t.total)+'</b></td></tr></table>';
+  h+='<h2>Compared with other systems</h2><table><tr><th>System</th><th class="r">Price</th><th class="r">Saving a year</th><th class="r">Payback</th></tr>'+['ongrid','hybridLi','hybridPb','offgrid'].map(k=>{const x=pl.types[k];return '<tr><td>'+TYPES[k].label+'</td><td class="r">'+rsFull(x.total)+'</td><td class="r">'+rsFull(x.sim.saving)+'</td><td class="r">'+yrs(x.payback)+'</td></tr>';}).join('')+'</table>';
+  h+='<p class="m">Estimates only. Prices and rules checked 9 Oct 2026 (export credit Rs '+fx(S.buyback)+' a unit under NEPRA Prosumer Regulations 2026). Confirm with a site survey before ordering.</p></body></html>';
+  return h;
+}
+async function saveFile(name,data){
+  try{
+    const d=await window.claude.use('downloads');
+    if(!d){toast('Saving files is not available in this view.');return;}
+    await d.save({filename:name,data:data});toast('Saved '+name);
+  }catch(e){if(e&&e.code==='declined')return;toast('The file could not be saved.');}
+}
+function toast(msg){
+  const el=$('toast');el.textContent=msg;el.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>{el.hidden=true;},3200);
+}
+function copyText(text){
+  const done=()=>toast('Summary copied.');
+  function fallback(){try{const ta=document.createElement('textarea');ta.value=text;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');document.body.removeChild(ta);ok?done():toast('Press and hold to copy the summary from the page.');}catch(e){toast('Copying is blocked here.');}}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done,fallback);}else fallback();
+}
+
+/* ================= RENDER ================= */
+function render(){
+  const box=$('results');
+  if(!R.has){box.innerHTML='<div class="empty">Enter the units from at least one monthly bill in step 1. Your system size, prices and panel angle appear here.</div>';return;}
+  let h=secUsage()+secSize()+secCompare()+secMoney()+secRoof()+secSun();
+  if(S.mode==='installer'||S.wantNear)h+=secNearby();
+  if(S.mode==='installer')h+=secBoq();
+  h+=secBoard();
+  box.innerHTML=h;
+}
+function update(){
+  try{R=compute(S);render();}catch(e){$('results').innerHTML='<div class="empty">Something in the inputs could not be calculated. Check the numbers and try again.</div>';if(window.console)console.error(e);}
+  saveState();
+}
+let raf=0;function schedule(){if(raf)return;raf=requestAnimationFrame(()=>{raf=0;update();});}
+
+/* ================= INPUTS ================= */
+const BIND=[['category','category','str'],['flatRate','flatRate','num'],['city','cityId','str'],['latIn','lat','num'],['lonIn','lon','num'],
+  ['areaVal','areaVal','num'],['areaUnit','areaUnit','str'],['usablePct','usablePct','num'],['roofType','roofType','str'],['slope','slope','num'],
+  ['azDevS','azDev','num'],['azDev','azDev','num'],['backup','backup','str'],['loadKw','loadKw','num'],['hours','hours','num'],['dayShare','dayShare','num'],
+  ['priority','T','num'],['T','T','num'],['quote','quote','opt'],['wantNear','wantNear','bool'],['client','client','txt'],['site','site','txt'],['qref','qref','txt'],
+  ['wp','wp','num'],['sizeOv','sizeOv','opt'],['battOv','battOv','opt'],['tiltMode','tiltMode','str'],['tiltCustom','tiltCustom','num'],['hoursSun','hoursSun','num'],
+  ['loss','loss','num'],['shade','shade','num'],['dcac','dcac','num'],['buyback','buyback','num'],['fpa','fpa','num'],['esc','esc','num'],['deg','deg','num']];
+const PB=[['pPanel','panelW'],['pStruct','struct'],['pInvG','invG'],['pInvH','invH'],['pInvO','invO'],['pLi','li'],['pPb','pb'],['pBos','bos'],['pBosF','bosF'],['pLab','lab'],['pPaper','paper'],['pMargin','margin']];
+
+function showHide(){
+  $('flatWrap').hidden=S.category!=='flat';
+  $('customLoc').hidden=S.cityId!=='custom';
+  $('slopeWrap').hidden=S.roofType!=='sloped';
+  $('backupWrap').hidden=S.backup!=='yes';
+  $('sampleBanner').hidden=!S.isSample;
+}
+function syncInputs(){
+  BIND.forEach(b=>{
+    const el=$(b[0]);if(!el)return;const v=S[b[1]];
+    if(b[2]==='bool')el.checked=!!v;
+    else if(b[0]==='priority'){const opts=[4,6,9];let best=opts[0];opts.forEach(o=>{if(Math.abs(o-v)<Math.abs(best-v))best=o;});el.value=String(best);}
+    else el.value=(v==null||v==='')?'':String(v);
+  });
+  PB.forEach(p=>{$(p[0]).value=String(S.P[p[1]]);});
+  $('tier').value=S.tier;$('tier2').value=S.tier;
+  for(let i=0;i<12;i++)$('m'+i).value=S.units[i]>0?String(S.units[i]):'';
+  $('modeInd').setAttribute('aria-pressed',String(S.mode==='individual'));
+  $('modeIns').setAttribute('aria-pressed',String(S.mode==='installer'));
+  document.body.dataset.mode=S.mode;
+  showHide();
+}
+function readVal(el,type){
+  if(type==='bool')return el.checked;
+  const v=el.value;
+  if(type==='str'||type==='txt')return v;
+  if(type==='opt')return v===''?'':+v;
+  if(v===''||!isFinite(+v))return undefined;
+  return +v;
+}
+function setMode(m){S.mode=m;document.body.dataset.mode=m;$('modeInd').setAttribute('aria-pressed',String(m==='individual'));$('modeIns').setAttribute('aria-pressed',String(m==='installer'));syncInputs();update();}
+function setTier(t){S.tier=t;S.P=Object.assign({},TIERS[t]);syncInputs();update();}
+
+function init(){
+  /* build city list */
+  const groups={};CITIES.forEach(c=>{(groups[c.p]=groups[c.p]||[]).push(c);});
+  let opts='';Object.keys(groups).forEach(p=>{opts+='<optgroup label="'+esc(p)+'">'+groups[p].map(c=>'<option value="'+c.id+'">'+esc(c.n)+'</option>').join('')+'</optgroup>';});
+  opts+='<optgroup label="Elsewhere"><option value="custom">Other place (enter coordinates)</option></optgroup>';
+  $('city').innerHTML=opts;
+  $('monthsGrid').innerHTML=MONTHS.map((m,i)=>'<div class="field"><label for="m'+i+'">'+m+'</label><input type="number" id="m'+i+'" min="0" step="1" inputmode="numeric"></div>').join('');
+  $('results').removeAttribute('aria-live');
+
+  BIND.forEach(b=>{
+    const el=$(b[0]);if(!el)return;
+    const h=()=>{const v=readVal(el,b[2]);if(v!==undefined)S[b[1]]=v;
+      if(b[0]==='azDevS'||b[0]==='azDev'){$('azDev').value=S.azDev;$('azDevS').value=S.azDev;}
+      if(b[0]==='priority'){$('T').value=S.T;}
+      if(b[0]==='T'){const o=[4,6,9];let best=o[0];o.forEach(x=>{if(Math.abs(x-S.T)<Math.abs(best-S.T))best=x;});$('priority').value=String(best);}
+      showHide();schedule();};
+    el.addEventListener('input',h);el.addEventListener('change',h);
+  });
+  PB.forEach(p=>{const el=$(p[0]);const h=()=>{const v=readVal(el,'num');if(v!==undefined){S.P[p[1]]=v;schedule();}};el.addEventListener('input',h);});
+  for(let i=0;i<12;i++){$('m'+i).addEventListener('input',e=>{const v=parseFloat(e.target.value);S.units[i]=isFinite(v)&&v>0?v:0;S.isSample=false;showHide();schedule();});}
+  $('tier').addEventListener('change',e=>setTier(e.target.value));
+  $('tier2').addEventListener('change',e=>setTier(e.target.value));
+  $('btnSample').addEventListener('click',()=>{S.units=SAMPLE.slice();S.isSample=true;syncInputs();update();});
+  $('btnClear').addEventListener('click',()=>{S.units=new Array(12).fill(0);S.isSample=false;syncInputs();update();});
+  $('modeInd').addEventListener('click',()=>setMode('individual'));
+  $('modeIns').addEventListener('click',()=>setMode('installer'));
+  $('results').addEventListener('click',e=>{
+    const sz=e.target.closest('[data-size]');
+    if(sz){S.sizeKey=sz.getAttribute('data-size');S.sizeOv='';$('sizeOv').value='';update();return;}
+    const ty=e.target.closest('[data-type]');
+    if(ty){S.selType=ty.getAttribute('data-type');update();return;}
+    const ac=e.target.closest('[data-act]');
+    if(ac){const a=ac.getAttribute('data-act');
+      if(a==='copy')copyText(summaryText());
+      if(a==='quote')saveFile('solar-quote-'+(S.qref||'draft').replace(/[^\w-]+/g,'_')+'.html',reportHtml());
+      if(a==='csv')saveFile('solar-bill-of-quantities.csv',csvText());}
+  });
+  syncInputs();update();
+  try{if(window.claude&&window.claude.use){window.claude.use('downloads').then(d=>{if(d){hasDl=true;if(R&&R.has)render();}}).catch(()=>{});}}catch(e){}
+}
+init();
+window.__solar={S:()=>S,R:()=>R,setState:o=>{Object.assign(S,o);syncInputs();update();},compute};
+})();
+</script>
+
+</body></html>
